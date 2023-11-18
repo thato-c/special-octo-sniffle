@@ -192,13 +192,13 @@ public class AdminHome extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "First Name", "Last Name", "Email", "Phone Number", "Hire Date", "Faculty"
+                "First Name", "Last Name", "Email", "Phone Number", "Hire Date", "Faculty", "Role"
             }
         ));
         jScrollPane4.setViewportView(jTable3);
