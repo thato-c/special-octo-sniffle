@@ -44,6 +44,5 @@ public class ResourceManagement {
         } else {
             System.err.println("Failed to connect to database");
         }
-    }
-    
+    }    
 }
