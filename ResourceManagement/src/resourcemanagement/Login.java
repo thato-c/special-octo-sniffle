@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Connection;
+import javax.swing.JFrame;
 
 /**
  *
@@ -138,18 +140,10 @@ public class Login extends javax.swing.JFrame {
                                 "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
                         
-                        // Return Home page based on user role
-                        
-                        
-                        // TODO: Get the user_Id of the user retrieved
-                        // TODO: if (user_Id is in Student table){
-                        //           return the StudentHome frame}
-                        //       else if (user_Id is in FacultyMember table){
-                        //           return the FacultyHome frame}
-                        //       else if (user_Id is in DepartmentHeads table){
-                        //           return the DepartmentHome frame}
-                        //       else if (user_Id is in Administrator table){
-                        //           return the AdminHome frame}
+                        int userId = resultSet.getInt("User_Id");
+                        String role = determineUserRole(userId);
+                        openHomeFrame(role);
+                        this.dispose();
             
                     } else {
                         // Login failed
@@ -160,6 +154,9 @@ public class Login extends javax.swing.JFrame {
                                 "Login failed",
                                 JOptionPane.ERROR_MESSAGE);
                         
+                        String role = "Unknown";
+                        openHomeFrame(role);
+                        this.dispose();
                         
                     }
                 }
@@ -179,6 +176,69 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    private String determineUserRole(int userId){
+        String role = null;
+        
+        // Define SQL queries for each table
+        String studentQuery = "SELECT User_Id FROM Student WHERE User_Id = ?";
+        String facultyQuery = "SELECT User_Id FROM FacultyMember WHERE User_Id = ?";
+        String departmentHeadsQuery = "SELECT User_Id FROM DepartmentHeads WHERE User_Id = ?";
+        String adminQuery = "SELECT User_Id FROM Administrator WHERE User_Id = ?";
+        
+        try (Connection connection  = ResourceManagement.getConnection()){
+            //Check in the Student table
+            if (isUserInTable(connection, studentQuery, userId)){
+                role = "Student";
+            }
+            else if (isUserInTable(connection, facultyQuery, userId)){
+                role = "Faculty";
+            }
+            else if (isUserInTable(connection, departmentHeadsQuery, userId)){
+                role = "Department";
+            }
+            else if (isUserInTable(connection, adminQuery, userId)){
+                role = "Asministrator";
+            }
+        } catch (SQLException ex){
+        ex.printStackTrace();
+        }
+        return role;
+    }
+    
+    private boolean isUserInTable(Connection connection, String query, int userId) throws SQLException{
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setInt(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                return resultSet.next();
+            }
+        }
+    }
+    
+    private void openHomeFrame(String role){
+        if (role.equals("Student")){
+            StudentHome studentHomeFrame = new StudentHome();
+            studentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            studentHomeFrame.setVisible(true);
+        } else if (role.equals("Faculty")){
+            FacultyHome facultyHomeFrame = new FacultyHome();
+            facultyHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            facultyHomeFrame.setVisible(true);
+        } else if (role.equals("Department")){
+            DepartmentHome departmentHomeFrame = new DepartmentHome();
+            departmentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            departmentHomeFrame.setVisible(true);
+        } else if (role.equals("Administrator")){
+            AdminHome adminHomeFrame = new AdminHome();
+            adminHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            adminHomeFrame.setVisible(true);
+        } else if (role.equals("Unknown")){
+            Enroll enrolmentFrame = new Enroll();
+            enrolmentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            enrolmentFrame.setVisible(true);
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
