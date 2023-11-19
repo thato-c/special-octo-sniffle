@@ -132,17 +132,35 @@ public class Login extends javax.swing.JFrame {
                 // Execute the query and get the result set
                 try (ResultSet resultSet = preparedStatement.executeQuery()){
                     if (resultSet.next()){
-                        // Login successful
+                        // Login successful message
                         JOptionPane.showMessageDialog(this,
                                 "Login successful",
                                 "Success",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        
+                        // Return Home page based on user role
+                        
+                        
+                        // TODO: Get the user_Id of the user retrieved
+                        // TODO: if (user_Id is in Student table){
+                        //           return the StudentHome frame}
+                        //       else if (user_Id is in FacultyMember table){
+                        //           return the FacultyHome frame}
+                        //       else if (user_Id is in DepartmentHeads table){
+                        //           return the DepartmentHome frame}
+                        //       else if (user_Id is in Administrator table){
+                        //           return the AdminHome frame}
+            
                     } else {
                         // Login failed
+                        
+                        // return the Login frame with errors
                         JOptionPane.showMessageDialog(this,
                                 "Invalid username or password",
                                 "Login failed",
                                 JOptionPane.ERROR_MESSAGE);
+                        
+                        
                     }
                 }
                 
