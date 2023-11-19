@@ -20,7 +20,7 @@ public class ResourceManagement {
         try{
             // Load the JDBC driver
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C:\\Users\\ic westgate\\Documents\\SQL Lite Programmes\\Task Manager.db\"";
+            String url = "jdbc:sqlite:C:/Users/ic westgate/Documents/SQL Lite Programmes/University.db";
             
             // Establish the connection
             connection = DriverManager.getConnection(url);
@@ -44,5 +44,23 @@ public class ResourceManagement {
         } else {
             System.err.println("Failed to connect to database");
         }
-    }    
+        
+            Login login = new Login();
+            login.setVisible(true);
+            
+            Register reg = new Register();
+            reg.setVisible(false);
+
+            Enroll enroll = new Enroll();
+            enroll.setVisible(false);
+
+            DepartmentHome departmenthome = new DepartmentHome();
+            departmenthome.setVisible(false);
+
+            Courses courses = new Courses();
+            courses.setVisible(false);
+
+            StudentHome studenthome = new StudentHome();
+            studenthome.setVisible(false);            
+    }   
 }
