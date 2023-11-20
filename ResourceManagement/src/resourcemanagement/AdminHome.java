@@ -45,7 +45,7 @@ public class AdminHome extends javax.swing.JFrame {
                 String email = resultSet.getString("Email");
                 String phoneNumber = resultSet.getString("PhoneNumber");
                 String hireDate = resultSet.getString("HireDate");
-                String faculty = "Unknown";
+                String faculty = getFaculty(resultSet.getInt("faculty_Id"));
                 String role = "Unknown";
                 
                 // Add the retrieved data to the table model
@@ -55,6 +55,26 @@ public class AdminHome extends javax.swing.JFrame {
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    private String getFaculty(int facultyId){
+        String facultyQuery = "SELECT Name WHERE Faculty_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
+            
+            preparedStatement.setInt(1, facultyId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                String faculty = resultSet.getString("Name");
+                return faculty;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unassigned";
         }
     }
     
