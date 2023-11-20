@@ -210,16 +210,14 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         facultyTable = new javax.swing.JTable();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        btnAssignMemberRole = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         departmentTable = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        btnResourceUpload = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         departmentResourceTable = new javax.swing.JTable();
@@ -391,44 +389,37 @@ public class DepartmentHome extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(facultyTable);
 
-        jLabel8.setText("Faculty  Member");
-
         jLabel9.setText("Faculty  Role");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Faculty Member 1", "Faculty Member 2", "Faculty Member 3", "Faculty Member 4" }));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Teacher", "Research" }));
 
-        jButton2.setText("Assign Role");
+        btnAssignMemberRole.setText("Assign Role");
+        btnAssignMemberRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignMemberRoleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(191, 191, 191)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(247, 247, 247)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addComponent(btnAssignMemberRole)
                 .addGap(56, 56, 56))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(190, 190, 190)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,18 +427,14 @@ public class DepartmentHome extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAssignMemberRole))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane2.addTab("Faculty", jPanel3);
@@ -468,7 +455,12 @@ public class DepartmentHome extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(departmentTable);
 
-        jButton3.setText("Upload Resource");
+        btnResourceUpload.setText("Upload Resource");
+        btnResourceUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResourceUploadActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel10.setText("Department Resources");
@@ -500,7 +492,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(115, 115, 115)
-                        .addComponent(jButton3)
+                        .addComponent(btnResourceUpload)
                         .addGap(14, 14, 14))))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(170, 170, 170)
@@ -517,7 +509,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton3))
+                    .addComponent(btnResourceUpload))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -538,7 +530,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
 
@@ -581,6 +573,26 @@ public class DepartmentHome extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAddCourseActionPerformed
 
+    private void btnAssignMemberRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignMemberRoleActionPerformed
+        int row = facultyTable.getSelectedRow();
+        
+        if (row < 0){
+            JOptionPane.showMessageDialog(this,
+                    "No row is selected. Please select a row",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Role has been assigned",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);            
+        }
+    }//GEN-LAST:event_btnAssignMemberRoleActionPerformed
+
+    private void btnResourceUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResourceUploadActionPerformed
+        
+    }//GEN-LAST:event_btnResourceUploadActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -619,12 +631,11 @@ public class DepartmentHome extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable CourseTable;
     private javax.swing.JButton btnAddCourse;
+    private javax.swing.JButton btnAssignMemberRole;
+    private javax.swing.JButton btnResourceUpload;
     private javax.swing.JTable departmentResourceTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -634,7 +645,6 @@ public class DepartmentHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
