@@ -47,20 +47,6 @@ public class ResourceManagement {
         
             Login login = new Login();
             login.setVisible(true);
-            
-            Register reg = new Register();
-            reg.setVisible(false);
-
-            Enroll enroll = new Enroll();
-            enroll.setVisible(false);
-
-            DepartmentHome departmenthome = new DepartmentHome();
-            departmenthome.setVisible(false);
-
-            Courses courses = new Courses();
-            courses.setVisible(false);
-
-            StudentHome studenthome = new StudentHome();
-            studenthome.setVisible(false);            
+                        
     }   
 }
