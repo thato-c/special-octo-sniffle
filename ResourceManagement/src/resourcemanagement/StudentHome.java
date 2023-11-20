@@ -490,7 +490,7 @@ public class StudentHome extends javax.swing.JFrame {
     }
     
     private void getCourseSchedule(int courseId ){
-        String courseScheduleQuery = "SELECT StartTime FROM Schedule WHERE Course_Id=?";
+        String courseScheduleQuery = "SELECT * FROM Schedule WHERE Course_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(courseScheduleQuery)){
@@ -509,8 +509,8 @@ public class StudentHome extends javax.swing.JFrame {
                     int thursdayCurrentRowIndex = 0;
                     int fridayCurrentRowIndex = 0;
                     
-                    String startTime = resultSet.getString("StartTime");
-                    String day = resultSet.getString("Day");
+                    String startTime = resultSet.getString("Scheduled_Time");
+                    String day = resultSet.getString("Scheduled_Day");
                     
                     switch (day) {
                         case "Monday":
@@ -576,7 +576,7 @@ public class StudentHome extends javax.swing.JFrame {
             preparedStatement.setInt(1, StudentId);
             
             try (ResultSet resultSet = preparedStatement.executeQuery()){
-                tfStudentEnrolmentDate.setText(resultSet.getString("Enrolment_Date"));
+                tfStudentEnrolmentDate.setText(resultSet.getString("Enrollment_Date"));
                 tfStudentGrade.setText(resultSet.getString("Grade"));
                 courseId = resultSet.getInt("Course_Id");
             }
@@ -589,15 +589,15 @@ public class StudentHome extends javax.swing.JFrame {
     }
     
     private void getStudentCourseName(int courseId){
-        String courseQuery = "SELECT Name WHERE Course_Id=?";
+        String courseQuery = "SELECT Course_Name FROM Course WHERE Course_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
             
             preparedStatement.setInt(1, courseId);
             try (ResultSet resultSet = preparedStatement.executeQuery()){
-                tfStudentCourseName.setText(resultSet.getString(courseQuery));
-                //tfStudentCourseName.setText(resultSet.getString("Name"));
+                //tfStudentCourseName.setText(resultSet.getString(courseQuery));
+                tfStudentCourseName.setText(resultSet.getString("Course_Name"));
             }
             
         } catch (SQLException e){
