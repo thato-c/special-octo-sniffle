@@ -171,8 +171,8 @@ public class Login extends javax.swing.JFrame {
         
         // Define SQL queries for each table
         String studentQuery = "SELECT User_Id FROM Student WHERE User_Id = ?";
-        String facultyQuery = "SELECT User_Id FROM FacultyMember WHERE User_Id = ?";
-        String departmentHeadsQuery = "SELECT User_Id FROM DepartmentHeads WHERE User_Id = ?";
+        String facultyQuery = "SELECT User_Id FROM Faculty_Member WHERE User_Id = ?";
+        String departmentHeadsQuery = "SELECT User_Id FROM Department_Heads WHERE User_Id = ?";
         String adminQuery = "SELECT User_Id FROM Administrator WHERE User_Id = ?";
         
         try (Connection connection  = ResourceManagement.getConnection()){
@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
                 role = "Department";
             }
             else if (isUserInTable(connection, adminQuery, userId)){
-                role = "Asministrator";
+                role = "Administrator";
             }
         } catch (SQLException ex){
         ex.printStackTrace();
