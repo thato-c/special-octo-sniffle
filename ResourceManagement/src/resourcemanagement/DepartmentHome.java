@@ -4,6 +4,12 @@
  */
 package resourcemanagement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tchit
@@ -15,6 +21,36 @@ public class DepartmentHome extends javax.swing.JFrame {
      */
     public DepartmentHome() {
         initComponents();
+        //getStudents();
+        //getFacultyMembers();
+        //getDepartmentHeads();
+    }
+    
+    private void getFacultyMembers(){
+        String facultyQuery = "SELECT * FROM FacultyMember";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) facultyTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String faculty = "Unknown";
+                String role = "Unknown";
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, role});
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -32,11 +68,11 @@ public class DepartmentHome extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        studentTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        CourseTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -47,7 +83,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        facultyTable = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -56,11 +92,11 @@ public class DepartmentHome extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        departmentTable = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        departmentResourceTable = new javax.swing.JTable();
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,7 +116,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Student Page");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -99,7 +135,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(studentTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,7 +165,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Course Page");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        CourseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -148,7 +184,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(CourseTable);
 
         jLabel5.setText("Course Code");
 
@@ -211,7 +247,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Faculty Page");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        facultyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -222,7 +258,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email", "Phone Number", "Faculty", "Role"
             }
         ));
-        jScrollPane4.setViewportView(jTable3);
+        jScrollPane4.setViewportView(facultyTable);
 
         jLabel8.setText("Faculty  Member");
 
@@ -288,7 +324,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setText("Department Page");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        departmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -299,14 +335,14 @@ public class DepartmentHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email", "Phone Number", "Department"
             }
         ));
-        jScrollPane5.setViewportView(jTable4);
+        jScrollPane5.setViewportView(departmentTable);
 
         jButton3.setText("Upload Resource");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel10.setText("Department Resources");
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        departmentResourceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -317,8 +353,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 "Name", "Upload Date"
             }
         ));
-        jTable6.setPreferredSize(new java.awt.Dimension(150, 80));
-        jScrollPane6.setViewportView(jTable6);
+        jScrollPane6.setViewportView(departmentResourceTable);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -415,6 +450,10 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable CourseTable;
+    private javax.swing.JTable departmentResourceTable;
+    private javax.swing.JTable departmentTable;
+    private javax.swing.JTable facultyTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -441,14 +480,10 @@ public class DepartmentHome extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable studentTable;
     // End of variables declaration//GEN-END:variables
 }
