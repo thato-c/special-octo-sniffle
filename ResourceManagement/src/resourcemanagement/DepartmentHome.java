@@ -23,7 +23,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         initComponents();
         //getStudents();
         getFacultyMembers();
-        //getDepartmentHeads();
+        getDepartmentHeads();
     }
     
     private void getFacultyMembers(){
@@ -73,6 +73,54 @@ public class DepartmentHome extends javax.swing.JFrame {
         }
     }
 
+    private void getDepartmentHeads(){
+        String departmentQuery = "SELECT * FROM DepartmentHead";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String department = getDepartment(resultSet.getInt("Department_Id"));
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber});
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private String getDepartment(int departmentId){
+        String departmentQuery = "SELECT Name WHERE Department_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery)){
+            
+            preparedStatement.setInt(1, departmentId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                String faculty = resultSet.getString("Name");
+                return faculty;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unassigned";
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
