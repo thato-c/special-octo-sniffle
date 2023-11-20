@@ -597,7 +597,10 @@ public class DepartmentHome extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAssignMemberRoleActionPerformed
 
     private void btnResourceUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResourceUploadActionPerformed
-        
+        JOptionPane.showMessageDialog(this,
+                    "Resource Uploaded",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnResourceUploadActionPerformed
 
     private void cbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRoleActionPerformed
