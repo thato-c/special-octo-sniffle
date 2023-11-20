@@ -21,10 +21,9 @@ public class AdminHome extends javax.swing.JFrame {
      */
     public AdminHome() {
         initComponents();
-        //getStudents();
+        getStudents();
         getDepartmentHeads();
         getFacultyMembers();
-        //getUsers();
         getCourses();
     }
     
@@ -44,13 +43,15 @@ public class AdminHome extends javax.swing.JFrame {
                 String firstName = resultSet.getString("FirstName");
                 String lastName = resultSet.getString("LastName");
                 String email = resultSet.getString("Email");
-                String phoneNumber = "Unknown";
-                String hireDate = "Unknown";
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String hireDate = resultSet.getString("HireDate");
                 String faculty = "Unknown";
                 String role = "Unknown";
                 
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, phoneNumber, hireDate, faculty, role});
+                returnUsers(firstName, lastName, email, phoneNumber, "faculty Member");
+                
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -77,6 +78,7 @@ public class AdminHome extends javax.swing.JFrame {
                 String department = "Unknown";
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, phoneNumber, department});
+                returnUsers(firstName, lastName, email, phoneNumber, "Department Head");
             }
             
         } catch (SQLException e){
@@ -110,7 +112,39 @@ public class AdminHome extends javax.swing.JFrame {
         }
     }
 
+    private void getStudents(){
+        String studentQuery = "SELECT * FROM Student";
+        
+        try(Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber});
+                returnUsers(firstName, lastName, email, phoneNumber, "Student");
+                
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     
+    private void returnUsers(String firstName, String lastName, String email, String phoneNumber, String position){
+        DefaultTableModel model = (DefaultTableModel) facultyTable.getModel();
+        model.addRow(new Object[]{firstName, lastName, email, phoneNumber, position});
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -129,7 +163,7 @@ public class AdminHome extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        studentTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -187,7 +221,7 @@ public class AdminHome extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Student Page");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -206,7 +240,7 @@ public class AdminHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(studentTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -681,8 +715,8 @@ public class AdminHome extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable5;
     private javax.swing.JTree jTree1;
+    private javax.swing.JTable studentTable;
     // End of variables declaration//GEN-END:variables
 }
