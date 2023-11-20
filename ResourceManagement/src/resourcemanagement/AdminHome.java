@@ -28,7 +28,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private void getFacultyMembers(){
-        String facultyQuery = "SELECT * FROM FacultyMember";
+        String facultyQuery = "SELECT * FROM Faculty_Member";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery);
@@ -79,7 +79,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private void getDepartmentHeads(){
-        String departmentQuery = "SELECT * FROM DepartmentHead";
+        String departmentQuery = "SELECT * FROM Department_Heads";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery);
