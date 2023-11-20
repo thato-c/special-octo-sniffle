@@ -21,7 +21,7 @@ public class DepartmentHome extends javax.swing.JFrame {
      */
     public DepartmentHome() {
         initComponents();
-        //getStudents();
+        getStudents();
         getFacultyMembers();
         getDepartmentHeads();
     }
@@ -118,6 +118,33 @@ public class DepartmentHome extends javax.swing.JFrame {
         } catch (SQLException e){
             e.printStackTrace();
             return "Unassigned";
+        }
+    }
+    
+    private void getStudents(){
+        String studentQuery = "SELECT * FROM Student";
+        
+        try(Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email});
+                
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
     
