@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -183,7 +184,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private void returnUsers(String firstName, String lastName, String email, String phoneNumber, String position){
-        DefaultTableModel model = (DefaultTableModel) facultyTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) userTable.getModel();
         model.addRow(new Object[]{firstName, lastName, email, phoneNumber, position});
     }
     
@@ -220,9 +221,9 @@ public class AdminHome extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        userTable = new javax.swing.JTable();
         jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
+        btnDeleteUser = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -442,7 +443,7 @@ public class AdminHome extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("User Profile Management");
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -453,11 +454,16 @@ public class AdminHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email", "Phone Number", "Position"
             }
         ));
-        jScrollPane6.setViewportView(jTable5);
+        jScrollPane6.setViewportView(userTable);
 
         jButton17.setText("Edit User");
 
-        jButton18.setText("Delete User");
+        btnDeleteUser.setText("Delete User");
+        btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUserActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -471,7 +477,7 @@ public class AdminHome extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addGap(53, 53, 53)
-                        .addComponent(jButton18))
+                        .addComponent(btnDeleteUser))
                     .addComponent(jScrollPane6))
                 .addContainerGap())
         );
@@ -482,7 +488,7 @@ public class AdminHome extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jButton17)
-                    .addComponent(jButton18))
+                    .addComponent(btnDeleteUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -677,6 +683,40 @@ public class AdminHome extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton16ActionPerformed
 
+    private void btnDeleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUserActionPerformed
+        int row = userTable.getSelectedRow();
+        
+        if (row < 0){
+            JOptionPane.showMessageDialog(this,
+                    "No row is selected. Please select a row",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Get the database connection from the TaskManager class
+            java.sql.Connection connection = ResourceManagement.getConnection();
+            
+            try{
+                String userToDelete = (String) userTable.getValueAt(row, 0);
+                // Prepare the INSERT statement
+                String sqlInsert = "DELETE FROM User WHERE Username = ?";
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
+                    preparedStatement.setString(1, userToDelete);           
+
+                    // Execute the DELETE statement
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0){
+                        DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+                        model.removeRow(row);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteUserActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -714,6 +754,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteUser;
     private javax.swing.JTable courseTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;
@@ -726,7 +767,6 @@ public class AdminHome extends javax.swing.JFrame {
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -756,8 +796,8 @@ public class AdminHome extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable5;
     private javax.swing.JTree jTree1;
     private javax.swing.JTable studentTable;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
