@@ -20,7 +20,7 @@ public class ResourceManagement {
         try{
             // Load the JDBC driver
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C:/Users/ic westgate/Documents/SQL Lite Programmes/University.db";
+            String url = "jdbc:sqlite:C:/Users/ic westgate/Documents/SQL Lite Programmes/University2.db";
             
             // Establish the connection
             connection = DriverManager.getConnection(url);
