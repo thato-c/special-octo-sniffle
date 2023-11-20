@@ -4,6 +4,14 @@
  */
 package resourcemanagement;
 
+//import javax.swing.JOptionPane;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import javax.swing.table.DefaultTableModel;
+//import javax.swing.JFrame;
+
 /**
  *
  * @author tchit
@@ -15,6 +23,9 @@ public class StudentHome extends javax.swing.JFrame {
      */
     public StudentHome() {
         initComponents();
+        getCourse();
+        getFacultyMembers();
+        getDepartmentHeads();
     }
 
     /**
@@ -36,14 +47,15 @@ public class StudentHome extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
+        tfCourseCode = new javax.swing.JTextField();
+        tfCourseName = new javax.swing.JTextField();
+        tfCourseCredits = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        courseScheduleTable = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        taCourseMaterial = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -52,22 +64,22 @@ public class StudentHome extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        tfStudentFirstName = new javax.swing.JTextField();
+        tfStudentLastName = new javax.swing.JTextField();
+        tfStudentEmail = new javax.swing.JTextField();
+        tfStudentPhoneNumber = new javax.swing.JTextField();
+        tfStudentCourseName = new javax.swing.JTextField();
+        tfStudentEnrolmentDate = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
+        tfStudentGrade = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        facultyTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        departmentTable = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -98,7 +110,7 @@ public class StudentHome extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel16.setText("Course Schedule");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        courseScheduleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -114,12 +126,16 @@ public class StudentHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(courseScheduleTable);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel17.setText("Course Page");
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+
+        taCourseMaterial.setColumns(20);
+        taCourseMaterial.setRows(5);
+        jScrollPane3.setViewportView(taCourseMaterial);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -135,11 +151,14 @@ public class StudentHome extends javax.swing.JFrame {
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(252, 252, 252))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(138, 138, 138))))
+                        .addGap(138, 138, 138))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(201, 201, 201)
@@ -150,10 +169,9 @@ public class StudentHome extends javax.swing.JFrame {
                         .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGap(77, 77, 77)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                        .addComponent(jTextField8)
-                        .addComponent(jTextField9)
-                        .addComponent(jTextField10))
+                        .addComponent(tfCourseCode, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                        .addComponent(tfCourseName)
+                        .addComponent(tfCourseCredits))
                     .addContainerGap(201, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
@@ -161,33 +179,33 @@ public class StudentHome extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel17)
-                .addGap(203, 203, 203)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(76, 76, 76)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfCourseCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(11, 11, 11)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfCourseCredits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(252, Short.MAX_VALUE)))
         );
 
@@ -232,16 +250,16 @@ public class StudentHome extends javax.swing.JFrame {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(77, 77, 77)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField4)
-                                    .addComponent(jTextField5)
-                                    .addComponent(jTextField6)))
+                                    .addComponent(tfStudentFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(tfStudentLastName)
+                                    .addComponent(tfStudentEmail)
+                                    .addComponent(tfStudentPhoneNumber)
+                                    .addComponent(tfStudentCourseName)
+                                    .addComponent(tfStudentEnrolmentDate)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(77, 77, 77)
-                                .addComponent(jTextField13)))))
+                                .addComponent(tfStudentGrade)))))
                 .addContainerGap(220, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -251,32 +269,32 @@ public class StudentHome extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStudentFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentEnrolmentDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStudentGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -285,7 +303,7 @@ public class StudentHome extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Faculty Page");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        facultyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -296,7 +314,7 @@ public class StudentHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email", "Role"
             }
         ));
-        jScrollPane4.setViewportView(jTable3);
+        jScrollPane4.setViewportView(facultyTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -326,7 +344,7 @@ public class StudentHome extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setText("Department Page");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        departmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -337,7 +355,7 @@ public class StudentHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email"
             }
         ));
-        jScrollPane5.setViewportView(jTable4);
+        jScrollPane5.setViewportView(departmentTable);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -377,7 +395,216 @@ public class StudentHome extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void getFacultyMembers(){
+        String facultyQuery = "SELECT * FROM FacultyMember";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) facultyTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String role = "Unknown";
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, role});
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getDepartmentHeads(){
+        String departmentQuery = "SELECT * FROM DepartmentHead";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email});
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getCourse(){
+        String courseQuery = "SELECT * FROM Course";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            int credits = resultSet.getInt("Credits");
+            int courseId = resultSet.getInt("Course_Id");
+            tfCourseCode.setText(resultSet.getString("Code"));
+            tfCourseName.setText(resultSet.getString("Name"));
+            tfCourseCredits.setText(String.valueOf(credits));
+            getCourseSchedule(courseId);
+            getCourseMaterial(courseId);
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getCourseMaterial(int courseId){
+        String materialQuery = "SELECT * FROM CourseMaterial WHERE Course_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(materialQuery);
+                ){
+            
+            preparedStatement.setInt(1, courseId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                String material = resultSet.getString("Name");
+                taCourseMaterial.append(material + "\n");
+                }
+            }    
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getCourseSchedule(int courseId ){
+        String courseScheduleQuery = "SELECT StartTime FROM CourseSchedule WHERE Course_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseScheduleQuery)){
+            
+            preparedStatement.setInt(1, courseId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                DefaultTableModel model = (DefaultTableModel) courseScheduleTable.getModel();
+                model.setRowCount(0);
+                
+                while (resultSet.next()){
+                    int mondayCurrentRowIndex = 0;
+                    int tuesdayCurrentRowIndex = 0;
+                    int wednesdayCurrentRowIndex = 0;
+                    int thursdayCurrentRowIndex = 0;
+                    int fridayCurrentRowIndex = 0;
+                    
+                    String startTime = resultSet.getString("StartTime");
+                    String day = resultSet.getString("Day");
+                    
+                    switch (day) {
+                        case "Monday":
+                            model.setValueAt(startTime, mondayCurrentRowIndex, 0);
+                            mondayCurrentRowIndex++;
+                            break;
+                        case "Tuesday":
+                            model.setValueAt(startTime, tuesdayCurrentRowIndex, 1);
+                            tuesdayCurrentRowIndex++;
+                            break;
+                        case "Wednesday":
+                            model.setValueAt(startTime, wednesdayCurrentRowIndex, 2);
+                            wednesdayCurrentRowIndex++;
+                            break;
+                        case "Thursday": 
+                            model.setValueAt(startTime, thursdayCurrentRowIndex, 3);
+                            thursdayCurrentRowIndex++;
+                            break;
+                        case "Friday":
+                            model.setValueAt(startTime, fridayCurrentRowIndex, 4);
+                            fridayCurrentRowIndex++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void getStudentDetails(int StudentId){
+        String studentQuery = "SELECT * FROM Student WHERE Student_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery)){
+            
+            preparedStatement.setInt(1, StudentId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                tfStudentFirstName.setText(resultSet.getString("FirstName"));
+                tfStudentLastName.setText(resultSet.getString("LastName"));
+                tfStudentEmail.setText(resultSet.getString("Email"));
+                tfStudentPhoneNumber.setText(resultSet.getString("PhoneNumber"));
+            }
+            
+            getStudentEnrolmentDetails(StudentId);
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getStudentEnrolmentDetails(int StudentId){
+        int courseId = 0;
+        String enrolmentQuery = "SELECT * FROM Enrolment WHERE Student_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery)){
+            
+            preparedStatement.setInt(1, StudentId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                tfStudentEnrolmentDate.setText(resultSet.getString("Enrolment_Date"));
+                tfStudentGrade.setText(resultSet.getString("Grade"));
+                courseId = resultSet.getInt("Course_Id");
+            }
+            
+            getStudentCourseName(courseId);
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getStudentCourseName(int courseId){
+        String courseQuery = "SELECT Name WHERE Course_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
+            
+            preparedStatement.setInt(1, courseId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                tfStudentCourseName.setText(resultSet.getString(courseQuery));
+                //tfStudentCourseName.setText(resultSet.getString("Name"));
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -414,6 +641,9 @@ public class StudentHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable courseScheduleTable;
+    private javax.swing.JTable departmentTable;
+    private javax.swing.JTable facultyTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -437,24 +667,22 @@ public class StudentHome extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextArea taCourseMaterial;
+    private javax.swing.JTextField tfCourseCode;
+    private javax.swing.JTextField tfCourseCredits;
+    private javax.swing.JTextField tfCourseName;
+    private javax.swing.JTextField tfStudentCourseName;
+    private javax.swing.JTextField tfStudentEmail;
+    private javax.swing.JTextField tfStudentEnrolmentDate;
+    private javax.swing.JTextField tfStudentFirstName;
+    private javax.swing.JTextField tfStudentGrade;
+    private javax.swing.JTextField tfStudentLastName;
+    private javax.swing.JTextField tfStudentPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }
