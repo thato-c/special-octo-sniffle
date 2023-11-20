@@ -134,28 +134,18 @@ public class Login extends javax.swing.JFrame {
                 // Execute the query and get the result set
                 try (ResultSet resultSet = preparedStatement.executeQuery()){
                     if (resultSet.next()){
-                        // Login successful message
-                        JOptionPane.showMessageDialog(this,
-                                "Login successful",
-                                "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        System.out.println("Login successful");
                         
                         int userId = resultSet.getInt("User_Id");
                         String role = determineUserRole(userId);
-                        openHomeFrame(role);
+                        openHomeFrame(role, userId);
                         this.dispose();
             
                     } else {
-                        // Login failed
-                        
-                        // return the Login frame with errors
-                        JOptionPane.showMessageDialog(this,
-                                "Invalid username or password",
-                                "Login failed",
-                                JOptionPane.ERROR_MESSAGE);
+                        System.out.println("Login failed");
                         
                         String role = "Unknown";
-                        openHomeFrame(role);
+                        openHomeFrame(role, 0);
                         this.dispose();
                         
                     }
@@ -214,27 +204,36 @@ public class Login extends javax.swing.JFrame {
         }
     }
     
-    private void openHomeFrame(String role){
-        if (role.equals("Student")){
-            StudentHome studentHomeFrame = new StudentHome();
-            studentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            studentHomeFrame.setVisible(true);
-        } else if (role.equals("Faculty")){
-            FacultyHome facultyHomeFrame = new FacultyHome();
-            facultyHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            facultyHomeFrame.setVisible(true);
-        } else if (role.equals("Department")){
-            DepartmentHome departmentHomeFrame = new DepartmentHome();
-            departmentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            departmentHomeFrame.setVisible(true);
-        } else if (role.equals("Administrator")){
-            AdminHome adminHomeFrame = new AdminHome();
-            adminHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            adminHomeFrame.setVisible(true);
-        } else if (role.equals("Unknown")){
-            Enroll enrolmentFrame = new Enroll();
-            enrolmentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            enrolmentFrame.setVisible(true);
+    private void openHomeFrame(String role, int user_id){
+        switch (role) {
+            case "Student":
+                StudentHome studentHomeFrame = new StudentHome();
+                studentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                studentHomeFrame.setVisible(true);
+                studentHomeFrame.getStudentDetails(user_id);
+                break;
+            case "Faculty":
+                FacultyHome facultyHomeFrame = new FacultyHome();
+                facultyHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                facultyHomeFrame.setVisible(true);
+                break;
+            case "Department":
+                DepartmentHome departmentHomeFrame = new DepartmentHome();
+                departmentHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                departmentHomeFrame.setVisible(true);
+                break;
+            case "Administrator":
+                AdminHome adminHomeFrame = new AdminHome();
+                adminHomeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                adminHomeFrame.setVisible(true);
+                break;
+            case "Unknown":
+                Enroll enrolmentFrame = new Enroll();
+                enrolmentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                enrolmentFrame.setVisible(true);
+                break;
+            default:
+                break;
         }
         
     }
