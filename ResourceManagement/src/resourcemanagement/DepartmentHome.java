@@ -581,6 +581,7 @@ public class DepartmentHome extends javax.swing.JFrame {
 
     private void btnAssignMemberRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignMemberRoleActionPerformed
         int row = facultyTable.getSelectedRow();
+        String selectedItem = (String) cbRole.getSelectedItem();
         
         if (row < 0){
             JOptionPane.showMessageDialog(this,
@@ -589,7 +590,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Role has been assigned",
+                    selectedItem + " role has been assigned",
                     "Select row",
                     JOptionPane.ERROR_MESSAGE);            
         }
