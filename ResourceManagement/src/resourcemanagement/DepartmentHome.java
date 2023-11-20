@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -211,7 +212,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         facultyTable = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbRole = new javax.swing.JComboBox<>();
         btnAssignMemberRole = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -391,7 +392,12 @@ public class DepartmentHome extends javax.swing.JFrame {
 
         jLabel9.setText("Faculty  Role");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Teacher", "Research" }));
+        cbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Teacher", "Research" }));
+        cbRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbRoleActionPerformed(evt);
+            }
+        });
 
         btnAssignMemberRole.setText("Assign Role");
         btnAssignMemberRole.addActionListener(new java.awt.event.ActionListener() {
@@ -414,7 +420,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 .addGap(190, 190, 190)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
@@ -431,7 +437,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
                 .addContainerGap())
@@ -593,6 +599,41 @@ public class DepartmentHome extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnResourceUploadActionPerformed
 
+    private void cbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbRoleActionPerformed
+
+    private void updateRoleComboBox(){
+        // Get roles from the database
+        String roleQuery = "SELECT * FROM Role";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(roleQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            String[] roleValues = new String[]{};
+            String[] newValue = new String[]{resultSet.getString("Name")};
+
+            
+            while (resultSet.next()){
+                String[] allValues = new String[roleValues.length + 1];
+                System.arraycopy(roleValues, 0, allValues, 0, roleValues.length);
+                System.arraycopy(newValue, 0, allValues, roleValues.length, newValue.length);
+                
+                DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(allValues);
+                cbRole.setModel(comboBoxModel);
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -633,10 +674,10 @@ public class DepartmentHome extends javax.swing.JFrame {
     private javax.swing.JButton btnAddCourse;
     private javax.swing.JButton btnAssignMemberRole;
     private javax.swing.JButton btnResourceUpload;
+    private javax.swing.JComboBox<String> cbRole;
     private javax.swing.JTable departmentResourceTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
