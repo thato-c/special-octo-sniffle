@@ -1,0 +1,305 @@
+
+-- User Table
+
+CREATE TABLE User (
+User_Id INT PRIMARY KEY,
+UserName VARCHAR(255),
+Password VARCHAR(255)
+);
+
+-- Department Table
+
+CREATE TABLE Department(
+Department_Id INT PRIMARY KEY,
+Department_Name VARCHAR(255)
+);
+
+-- Faculty Table
+
+CREATE TABLE Faculty(
+Faculty_Id INT PRIMARY KEY,
+Faculty_Name VARCHAR(255),
+Department_Id INT,
+FOREIGN KEY (`Department_Id`) REFERENCES `Department`(`Department_Id`)
+);
+
+-- Course Table
+
+CREATE TABLE Course(
+Course_Id INT PRIMARY KEY,
+Course_Name VARCHAR(255),
+Credits INT,
+Faculty_Id INT
+);
+
+-- UserRole Table
+
+CREATE TABLE UserRole(
+UserRole_Id INT PRIMARY KEY,
+User_Id INT,
+Role_Id Int,
+FOREIGN KEY (`User_Id`) REFERENCES `User`(`User_Id`),
+FOREIGN KEY (`Role_Id`) REFERENCES `Role`(`Role_Id`) 
+);
+
+-- Roles Table
+
+CREATE TABLE Role(
+Role_Id INT PRIMARY KEY,
+Role_Name VARCHAR(255),
+Faculty_Id INT 
+);
+
+-- Student Table
+
+CREATE TABLE Student(
+Student_Id INT PRIMARY KEY,
+First_Name VARCHAR(255),
+Last_Name VARCHAR(255),
+Email VARCHAR(255),
+Phone_Number INT,
+User_Id INT,
+FOREIGN KEY (`User_Id`) REFERENCES `User`(`User_Id`) 
+);
+
+-- Faculty Member Table
+
+CREATE TABLE Faculty_Member(
+Faculty_Member_Id INT PRIMARY KEY,
+First_Name VARCHAR(255),
+Last_Name VARCHAR(255),
+Email VARCHAR(255),
+Phone_Number INT,
+Hire_Date Date,
+Faculty_Id INT,
+User_Id INT,
+FOREIGN KEY (`Faculty_Id`) REFERENCES `Faculty`(`Faculty_Id`),
+FOREIGN KEY (`User_Id`) REFERENCES `User`(`User_Id`)
+);
+
+-- Department Heads Table
+
+CREATE TABLE Department_Heads(
+Department_Head_Id INT PRIMARY KEY,
+First_Name VARCHAR(255),
+Last_Name VARCHAR(255),
+Email VARCHAR(255),
+Phone_Number INT,
+Department_Id INT,
+User_Id INT,
+FOREIGN KEY (`Department_Id`) REFERENCES `Department`(`Department_Id`),
+FOREIGN KEY (`User_Id`) REFERENCES `User`(`User_Id`) 
+);
+
+-- Administrator Table
+CREATE TABLE Administrator(
+Admin_Id INT PRIMARY KEY,
+First_Name VARCHAR(255),
+Last_Name VARCHAR(255),
+Email VARCHAR(255),
+Phone_Number INT,
+User_Id INT,
+FOREIGN KEY (`User_Id`) REFERENCES `User`(`User_Id`) 
+);
+
+-- Enrollment Table
+
+CREATE TABLE Enrollment(
+Enrollment_Id INT PRIMARY KEY,
+Student_Id INT,
+Course_Id iNT,
+Enrollment_Date DATE,
+Grade INT,
+FOREIGN KEY (`Student_Id`) REFERENCES `Student`(`Student_Id`) 
+);
+
+-- Department Resources
+
+CREATE TABLE Department_Resources(
+Resource_Id int PRIMARY KEY,
+Resource_Name VARCHAR(255),
+Upload_Date DATE,
+Department_Head_Id INT,
+Department_Id INT,
+FOREIGN KEY (`Department_Id`) REFERENCES `Department`(`Department_Id`),
+FOREIGN KEY (`Department_Head_Id`) REFERENCES `Department_Heads`(`Department_Head_Id`)
+);
+
+-- Schedule Table
+
+CREATE TABLE Schedule(
+Schedule_Id INT PRIMARY KEY,
+Course_Id INT,
+Scheduled_Day DATE,
+Scheduled_Time Time,
+FOREIGN KEY (`Course_Id`) REFERENCES `Course`(`Course_Id`)
+);
+
+-- Course Material
+
+CREATE TABLE Course_Material(
+Course_Material_Id INT PRIMARY KEY,
+Course_Id INT,
+Material VARCHAR(355),
+FOREIGN KEY (`Course_Id`) REFERENCES `Course`(`Course_Id`)
+);
+
+-- Insert data into User table
+INSERT INTO User (User_Id, UserName, Password)
+VALUES
+(1, 'Eren', 'Eren23456m'),
+(2, 'Mikasa','56789Mikasa'),
+(3, 'Naruto', 'Naruto567' ),
+(4, 'Sasuke', '67890Sasuke'),
+(5, 'Gojo', 'Gojo801om' ),
+(6, 'Megumi',  '012oMegum' ),
+(7, 'X-Men', 'X-Men234568' ),
+(8, ' Ntombi',  'Ntombi234568' ),
+(9, ' Moses', 'Moses@e5679' ),
+(10, ' Orochi','MaruOroc5679' ),
+(11, ' Ashley',  '01234Ashley' ),
+(12, ' Goku', '12345Goku' ),
+(13, 'Alice', 'alice4567'),
+(14, 'Bob',  'bob67890'),
+(15, 'Charlie', 'charlie4567890'),
+(16, 'Diana', 'dianav45' ),
+(17, 'Ethan ', 'ethan78901'),
+(18, 'Fiona','fiona7345'),
+(19, 'John', '5678john' ),
+(20, 'Jane','2345jane'),
+(21, 'Michael', 'Johnson45678'),
+(22, 'Emily',  'emily7890' ),
+(23, 'David', 'david9012'),
+(24, 'Sophia', 'Sophia01234');
+
+
+-- Insert data into Department table
+INSERT INTO Department (Department_Id, Department_Name)
+VALUES
+(1, 'Computer Science'),
+(2, 'Mathematics'),
+(3, 'Physics'),
+(4, 'Biology'),
+(5, 'Chemistry'),
+(6, 'Engineering');
+
+-- Insert data into Faculty table
+INSERT INTO Faculty (Faculty_Id, Faculty_Name, Department_Id)
+VALUES
+(1, 'Science Faculty', 1),
+(2, 'Science and Mathematics Faculty', 2),
+(3, 'Science and Physics Faculty', 3),
+(4, 'Health Science Faculty', 4),
+(5, 'Science and Chemistry Faculty', 5),
+(6, 'Science and Engineering Faculty', 6);
+
+-- Insert data into Course table
+INSERT INTO Course (Course_Id, Course_Name, Credits, Faculty_Id)
+VALUES
+(1, 'Introduction to Programming', 3, 1),
+(2, 'Calculus I', 4, 2),
+(3, 'Classical Mechanics', 3, 3),
+(4, 'Cell Biology', 4, 4),
+(5, 'Organic Chemistry', 3, 5),
+(6, 'Introduction to Electrical Engineering', 4, 6);
+
+-- Insert data into UserRole table
+INSERT INTO UserRole (UserRole_Id, Role_Id, User_Id)
+VALUES
+(1,1, 7),
+(2,2, 8),
+(3,3, 9),
+(4,4, 10),
+(5,5, 11),
+(6,6, 12);
+
+-- Insert data into Role table
+INSERT INTO Role (Role_Id, Role_Name, Faculty_Id)
+VALUES
+(1, 'Research', 1),
+(2, 'Teacher', 2),
+(3, 'Research', 3),
+(4, 'Research', 4),
+(5, 'Teacher', 5),
+(6, 'Teacher', 6);
+
+-- Insert data into Student table
+INSERT INTO Student (Student_Id, First_Name, Last_Name, Email, Phone_Number, User_Id)
+VALUES
+(1, 'Eren', 'Yeager', 'ErenY@email.com', 1234567890, 1),
+(2, 'Mikasa', 'Ackerman', 'AkermanMikasa@email.com', 234567891, 2),
+(3, 'Naruto', 'Uzumaki', 'NarutoUzumaki@email.com', 345678912, 3),
+(4, 'Sasuke', 'Uchiha', 'UchinaSasuke@email.com', 456789013, 4),
+(5, 'Satoru', 'Gojo', 'GojoS@email.com', 567801234, 5),
+(6, 'Megumi', 'Fushiguro', 'FushiguroMegumi@email.com', 678012345, 6);
+
+-- Insert data into Faculty_Member table
+INSERT INTO Faculty_Member (Faculty_Member_Id, First_Name, Last_Name, Email, Phone_Number, Hire_Date, Faculty_Id, User_Id)
+VALUES
+(1, 'Prof X', 'X-Men', 'X-Men@email.com', 1234567890, '2022-01-01', 1, 7),
+(2, 'Prof Ntombi', 'Ngcwangu', 'NtombiNgcwangu@email.com', 234568901, '2022-02-01', 2, 8),
+(3, 'Prof Moses', 'Nyorongo', 'Moses@email.com', 345679012, '2022-03-01', 3, 9),
+(4, 'Prof Orochi', 'Maru', 'MaruOrochi@email.com', 456890123, '2022-04-01', 4, 10),
+(5, 'Prof Ashley', 'Mushinyi', 'Ashley@email.com', 567901234, '2022-05-01', 5, 11),
+(6, 'Prof Goku', 'Son', 'SonGoku@email.com', 678912345, '2022-06-01', 6, 12);
+
+-- Insert data into Department_Heads table
+INSERT INTO Department_Heads (Department_Head_Id, First_Name, Last_Name, Email, Phone_Number, Department_Id, User_Id)
+VALUES
+(1, 'Alice', 'Johnson', 'alice.johnson@email.com', 1234567890, 1, 13),
+(2, 'Bob', 'Smith', 'bob.smith@email.com', 2345678901, 2, 14),
+(3, 'Charlie', 'Williams', 'charlie@email.com', 3456789012, 3, 15),
+(4, 'Diana', 'Brown', 'diana.brown@email.com', 4567890123, 4, 16),
+(5, 'Ethan ', 'Miller', 'ethan@email.com', 5678901234, 5, 17),
+(6, 'Fiona', 'Anderson', 'fiona.anderson@email.com', 6789012345, 6, 18);
+
+-- Insert data into Administrator table
+INSERT INTO Administrator (Admin_Id, First_Name, Last_Name, Email, Phone_Number, User_Id)
+VALUES
+(1, 'John', 'Doe', 'john.doe@email.com', 1234567890, 19),
+(2, 'Jane', 'Smith', 'jane.smith@email.com', 245678901, 20),
+(3, 'Michael', 'Johnson', 'Johnson@email.com', 356789012, 21),
+(4, 'Emily', 'Williams', 'emily.williams@email.com', 456789123, 22),
+(5, 'David', 'Anderson', 'davidanderson@email.com', 567890234, 23),
+(6, 'Sophia', 'Brown', 'SophiaBrown@email.com', 678902345, 24);
+
+-- Insert data into Enrollment table
+INSERT INTO Enrollment (Enrollment_Id, Student_Id, Course_Id, Enrollment_Date, Grade)
+VALUES
+(1, 1, 1, '2022-01-15', 85),
+(2, 2, 2, '2022-02-15', 90),
+(3, 3, 3, '2022-03-15', 78),
+(4, 4, 4, '2022-04-15', 92),
+(5, 5, 5, '2022-05-15', 87),
+(6, 6, 6, '2022-06-15', 88);
+
+-- Insert data into Department_Resources table
+INSERT INTO Department_Resources (Resource_Id, Resource_Name, Upload_Date, Department_Head_Id)
+VALUES
+(1, 'Programming Lab Materials', '2022-01-01', 1),               
+(2, 'Calculus I Study Guides', '2022-02-01', 2),                   
+(3, 'Classical Mechanics Research Papers', '2022-03-01', 3),      
+(4, 'Cell Biology Lecture Videos', '2022-04-01', 4),               
+(5, 'Organic Chemistry Lab Procedures', '2022-05-01', 5),           
+(6, 'Electrical Engineering Introductory Presentations', '2022-06-01', 6);  
+
+
+-- Insert data into Schedule table
+INSERT INTO Schedule (Schedule_Id, Course_Id, Scheduled_Day, Scheduled_Time)
+VALUES
+(1, 1, '2022-01-01', '10:00:00'),
+(2, 2, '2022-02-01', '11:00:00'),
+(3, 3, '2022-03-01', '12:00:00'),
+(4, 4, '2022-04-01', '13:00:00'),
+(5, 5, '2022-05-01', '14:00:00'),
+(6, 6, '2022-06-01', '15:00:00');
+
+-- Insert data into Course_Material table
+INSERT INTO Course_Material (Course_Material_Id, Course_Id, Material)
+VALUES
+(1, 1, 'Introduction to Programming Lecture Notes'),                
+(2, 2, 'Calculus I Practice Problems'),                              
+(3, 3, 'Classical Mechanics Textbook'),                              
+(4, 4, 'Cell Biology Research Articles'),                            
+(5, 5, 'Organic Chemistry Lab Manual'),                              
+(6, 6, 'Electrical Engineering Introductory Slides'); 

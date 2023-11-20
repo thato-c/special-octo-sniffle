@@ -120,7 +120,7 @@ public class Login extends javax.swing.JFrame {
             java.sql.Connection connection = ResourceManagement.getConnection();
             
             // Prepare the SELECT statement
-            String sqlSelect = "SELECT User_Id FROM User WHERE Username=? AND Password=?";
+            String sqlSelect = "SELECT User_Id FROM User WHERE UserName=? AND Password=?";
             
             
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
