@@ -22,7 +22,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     public DepartmentHome() {
         initComponents();
         //getStudents();
-        //getFacultyMembers();
+        getFacultyMembers();
         //getDepartmentHeads();
     }
     
@@ -42,14 +42,34 @@ public class DepartmentHome extends javax.swing.JFrame {
                 String firstName = resultSet.getString("FirstName");
                 String lastName = resultSet.getString("LastName");
                 String email = resultSet.getString("Email");
-                String faculty = "Unknown";
+                String faculty = getFaculty(resultSet.getInt("FacultyId"));
                 String role = "Unknown";
                 
                 // Add the retrieved data to the table model
-                model.addRow(new Object[]{firstName, lastName, email, role});
+                model.addRow(new Object[]{firstName, lastName, email, faculty, role});
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    private String getFaculty(int facultyId){
+        String facultyQuery = "SELECT Name WHERE Faculty_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
+            
+            preparedStatement.setInt(1, facultyId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                String faculty = resultSet.getString("Name");
+                return faculty;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unassigned";
         }
     }
 
