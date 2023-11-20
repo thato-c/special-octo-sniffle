@@ -134,11 +134,7 @@ public class Login extends javax.swing.JFrame {
                 // Execute the query and get the result set
                 try (ResultSet resultSet = preparedStatement.executeQuery()){
                     if (resultSet.next()){
-                        // Login successful message
-                        JOptionPane.showMessageDialog(this,
-                                "Login successful",
-                                "Success",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        System.out.println("Login successful");
                         
                         int userId = resultSet.getInt("User_Id");
                         String role = determineUserRole(userId);
@@ -146,13 +142,7 @@ public class Login extends javax.swing.JFrame {
                         this.dispose();
             
                     } else {
-                        // Login failed
-                        
-                        // return the Login frame with errors
-                        JOptionPane.showMessageDialog(this,
-                                "Invalid username or password",
-                                "Login failed",
-                                JOptionPane.ERROR_MESSAGE);
+                        System.out.println("Login failed");
                         
                         String role = "Unknown";
                         openHomeFrame(role);
