@@ -4,6 +4,12 @@
  */
 package resourcemanagement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tchit
@@ -15,6 +21,9 @@ public class FacultyHome extends javax.swing.JFrame {
      */
     public FacultyHome() {
         initComponents();
+        getFacultyMembers();
+        getDepartmentHeads();
+        getStudents();
     }
 
     /**
@@ -60,7 +69,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        departmentTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -331,7 +340,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setText("Department Page");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        departmentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -342,7 +351,7 @@ public class FacultyHome extends javax.swing.JFrame {
                 "First Name", "Last Name", "Email", "Phone Number"
             }
         ));
-        jScrollPane5.setViewportView(jTable4);
+        jScrollPane5.setViewportView(departmentTable);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -385,6 +394,126 @@ public class FacultyHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void getDepartmentHeads(){
+        String departmentQuery = "SELECT * FROM DepartmentHead";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber});
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getFacultyMembers(){
+        String facultyMemberQuery = "SELECT * FROM FacultyMember";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyMemberQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String faculty = getUserFaculty(resultSet.getInt("Faculty_Id"));
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber, faculty});
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private String getUserFaculty(int facultyId){
+        String facultyQuery = "SELECT Name WHERE Faculty_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
+            
+            preparedStatement.setInt(1, facultyId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                String faculty = resultSet.getString("Name");
+                return faculty;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unassigned";
+        }
+    }
+    
+    private void getStudents(){
+        String studentQuery = "SELECT * FROM Student";
+        
+        try(Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            while (resultSet.next()){
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String email = resultSet.getString("Email");
+                String grade = getStudentGrade(resultSet.getInt("Student_Id"));
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{firstName, lastName, email, grade});
+                
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private String getStudentGrade(int studentId){
+        String enrolmentQuery = "SELECT Grade FROM Enrollment WHERE Student_Id=?";
+        
+        try(Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery)){
+            
+            preparedStatement.setInt(1, studentId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                String Grade = resultSet.getString("Grade");
+                return Grade;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "N/A";
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -421,6 +550,7 @@ public class FacultyHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable departmentTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -452,7 +582,6 @@ public class FacultyHome extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
