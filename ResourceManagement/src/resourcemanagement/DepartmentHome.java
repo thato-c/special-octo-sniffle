@@ -111,13 +111,41 @@ public class DepartmentHome extends javax.swing.JFrame {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 
-                String faculty = resultSet.getString("Name");
-                return faculty;
+                String department = resultSet.getString("Name");
+                getDepartmentResources(departmentId);
+                return department;
             }
             
         } catch (SQLException e){
             e.printStackTrace();
             return "Unassigned";
+        }
+    }
+    
+    private void getDepartmentResources(int departmentId){
+        String resourceQuery = "SELECT * FROM DepartmentResource WHERE Department_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(resourceQuery)){
+            
+            DefaultTableModel model = (DefaultTableModel) departmentResourceTable.getModel();
+            
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            
+            preparedStatement.setInt(1, departmentId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                String Name = resultSet.getString("Name");
+                String uploadDate = resultSet.getString("UploadDate");
+                
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{Name, uploadDate});
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
     
@@ -147,6 +175,8 @@ public class DepartmentHome extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
