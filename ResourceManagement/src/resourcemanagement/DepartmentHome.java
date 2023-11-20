@@ -29,7 +29,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private void getFacultyMembers(){
-        String facultyQuery = "SELECT * FROM FacultyMember";
+        String facultyQuery = "SELECT * FROM Faculty_Member";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery);
@@ -56,7 +56,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private String getFaculty(int facultyId){
-        String facultyQuery = "SELECT Name WHERE Faculty_Id=?";
+        String facultyQuery = "SELECT Name FROM Faculty WHERE Faculty_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
