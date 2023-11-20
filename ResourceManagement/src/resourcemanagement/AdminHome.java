@@ -95,7 +95,8 @@ public class AdminHome extends javax.swing.JFrame {
                 String lastName = resultSet.getString("LastName");
                 String email = resultSet.getString("Email");
                 String phoneNumber = resultSet.getString("PhoneNumber");
-                String department = "Unknown";
+                String department = getDepartment(resultSet.getInt("DepartmentHead_Id"));
+                
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, phoneNumber, department});
                 returnUsers(firstName, lastName, email, phoneNumber, "Department Head");
@@ -103,6 +104,26 @@ public class AdminHome extends javax.swing.JFrame {
             
         } catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    private String getDepartment(int departmentId){
+        String departmentQuery = "SELECT Name WHERE Department_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery)){
+            
+            preparedStatement.setInt(1, departmentId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                String department = resultSet.getString("Name");
+                return department;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unassigned";
         }
     }
     
