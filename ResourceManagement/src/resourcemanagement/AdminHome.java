@@ -47,7 +47,7 @@ public class AdminHome extends javax.swing.JFrame {
                 String phoneNumber = resultSet.getString("Phone_Number");
                 String hireDate = resultSet.getString("Hire_Date");
                 String faculty = getFaculty(resultSet.getInt("Faculty_Id"));
-                String role = "Unknown";
+                String role = getUserRole(resultSet.getInt("User_Id"));
                 
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, phoneNumber, hireDate, faculty, role});
@@ -59,7 +59,44 @@ public class AdminHome extends javax.swing.JFrame {
         }
     }
     
+    private String getUserRole(int userId){
+        String userRoleQuery = "SELECT * FROM UserRole WHERE User_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(userRoleQuery)){
+            
+            preparedStatement.setInt(1, userId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                int RoleId = resultSet.getInt("Role_Id");
+                String roleName = getRoleName(RoleId);
+                return roleName;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
     
+    private String getRoleName(int roleId){
+        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
+            
+            preparedStatement.setInt(1, roleId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                String roleName = resultSet.getString("Role_Name");       
+                return roleName;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
     
     private String getFaculty(int facultyId){
         String facultyQuery = "SELECT Faculty_Name WHERE Faculty_Id=?";
