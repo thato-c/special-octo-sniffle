@@ -80,7 +80,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private String getRoleName(int roleId){
-        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        String roleQuery = "SELECT * FROM Role WHERE Role_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
@@ -99,7 +99,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private String getFaculty(int facultyId){
-        String facultyQuery = "SELECT Faculty_Name WHERE Faculty_Id=?";
+        String facultyQuery = "SELECT Faculty_Name FROM Faculty WHERE Faculty_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
@@ -148,7 +148,7 @@ public class AdminHome extends javax.swing.JFrame {
     }
     
     private String getDepartment(int departmentId){
-        String departmentQuery = "SELECT Department_Name WHERE Department_Id=?";
+        String departmentQuery = "SELECT Department_Name FROM Department WHERE Department_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery)){
