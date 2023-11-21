@@ -97,7 +97,6 @@ public class DepartmentHome extends javax.swing.JFrame {
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, phoneNumber,department});
             }
-            
         } catch (SQLException e){
             e.printStackTrace();
         }
