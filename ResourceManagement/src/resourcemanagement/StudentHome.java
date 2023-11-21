@@ -115,11 +115,11 @@ public class StudentHome extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+                "Day", "Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -542,39 +542,11 @@ public class StudentHome extends javax.swing.JFrame {
                 model.setRowCount(0);
                 
                 while (resultSet.next()){
-                    int mondayCurrentRowIndex = 0;
-                    int tuesdayCurrentRowIndex = 0;
-                    int wednesdayCurrentRowIndex = 0;
-                    int thursdayCurrentRowIndex = 0;
-                    int fridayCurrentRowIndex = 0;
                     
                     String startTime = resultSet.getString("Scheduled_Time");
                     String day = resultSet.getString("Scheduled_Day");
                     
-                    switch (day) {
-                        case "Monday":
-                            model.setValueAt(startTime, mondayCurrentRowIndex, 0);
-                            mondayCurrentRowIndex++;
-                            break;
-                        case "Tuesday":
-                            model.setValueAt(startTime, tuesdayCurrentRowIndex, 1);
-                            tuesdayCurrentRowIndex++;
-                            break;
-                        case "Wednesday":
-                            model.setValueAt(startTime, wednesdayCurrentRowIndex, 2);
-                            wednesdayCurrentRowIndex++;
-                            break;
-                        case "Thursday": 
-                            model.setValueAt(startTime, thursdayCurrentRowIndex, 3);
-                            thursdayCurrentRowIndex++;
-                            break;
-                        case "Friday":
-                            model.setValueAt(startTime, fridayCurrentRowIndex, 4);
-                            fridayCurrentRowIndex++;
-                            break;
-                        default:
-                            break;
-                    }
+                    model.addRow(new Object[]{day, startTime});
                 }
             }
             
