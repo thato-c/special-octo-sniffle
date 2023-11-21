@@ -4,6 +4,13 @@
  */
 package resourcemanagement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tchit
@@ -28,16 +35,16 @@ public class Enroll extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        tfFirstName = new javax.swing.JTextField();
+        tfLastName = new javax.swing.JTextField();
+        btnEnrollStudent = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        tfEmail = new javax.swing.JTextField();
+        tfPhoneNumber = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbCourseName = new javax.swing.JComboBox<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,7 +52,12 @@ public class Enroll extends javax.swing.JFrame {
 
         jLabel2.setText("Last Name");
 
-        jButton1.setText("Apply");
+        btnEnrollStudent.setText("Apply");
+        btnEnrollStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnrollStudentActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Enroll");
@@ -56,7 +68,7 @@ public class Enroll extends javax.swing.JFrame {
 
         jLabel6.setText("Course");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Physics", "Biology", "Engineering", "Mathematics" }));
+        cbCourseName.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Physics", "Biology", "Engineering", "Mathematics" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,16 +85,16 @@ public class Enroll extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField3)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfEmail)
+                        .addComponent(tfPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfFirstName)
+                        .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54))
             .addGroup(layout.createSequentialGroup()
                 .addGap(127, 127, 127)
-                .addComponent(jButton1)
+                .addComponent(btnEnrollStudent)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -97,32 +109,135 @@ public class Enroll extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)))
                     .addComponent(jLabel1))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnEnrollStudent)
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnrollStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnrollStudentActionPerformed
+        String firstName = tfFirstName.getText();
+        String lastName = tfLastName.getText();
+        String email = tfEmail.getText();
+        String phoneNumber = tfPhoneNumber.getText();
+        String selectedCourse = (String) cbCourseName.getSelectedItem();
+        
+        if (firstName.isEmpty() | lastName.isEmpty() | email.isEmpty() | lastName.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                "Please enter all fields",
+                "Try again",
+                JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Get the database connection from the TaskManager class
+            java.sql.Connection connection = ResourceManagement.getConnection();
+            
+            // Prepare the INSERT statement
+            String sqlInsert = "Insert INTO Student (First_Name, Last_Name, Email, Phone_Number) VALUES (?, ?, ?, ?)";
+            
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
+                preparedStatement.setString(1, firstName);
+                preparedStatement.setString(2, lastName);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(3, phoneNumber);
+                int studentId = getStudentId(email);
+                getCourseId(selectedCourse, studentId);
+            
+            
+                // Execute the INSERT statement
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0){
+                    JOptionPane.showMessageDialog(this,
+                    "Congrats: You are now enrolled for" + selectedCourse,
+                    "Successful Enrollment",
+                    JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnEnrollStudentActionPerformed
+
+    private void getCourseId(String courseName, int studentId){
+        String courseQuery = "SELECT Course_Id FROM Course WHERE Course_Name";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
+            
+            preparedStatement.setString(1, courseName);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                int courseId = resultSet.getInt("Course_Id");
+                
+                assignStudentCourse(courseId, studentId);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private int getStudentId(String email){
+         String studentIdQuery = "SELECT Student_Id FROM Student WHERE Email=?";
+            
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentIdQuery)){
+            
+            preparedStatement.setString(1, email);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                int studentId = resultSet.getInt("Student_Id");
+                return studentId;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    private void assignStudentCourse(int courseId, int studentId){
+        
+        // Prepare the INSERT statement
+        String enrolmentInsertQuery = "Insert INTO Enrollment (Student_Id, Course_Id, Enrollment_Date) VALUES (?, ?, ?)";
+            
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(enrolmentInsertQuery)){
+                preparedStatement.setInt(1, courseId);
+                preparedStatement.setInt(2, studentId);
+                preparedStatement.setString(3, "2022-02-20");
+                
+            // Execute the INSERT statement
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0){
+                System.out.println("Enrolling...");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -160,17 +275,17 @@ public class Enroll extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnEnrollStudent;
+    private javax.swing.JComboBox<String> cbCourseName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField tfEmail;
+    private javax.swing.JTextField tfFirstName;
+    private javax.swing.JTextField tfLastName;
+    private javax.swing.JTextField tfPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }
