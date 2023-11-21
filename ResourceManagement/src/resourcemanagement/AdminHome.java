@@ -813,7 +813,10 @@ public class AdminHome extends javax.swing.JFrame {
 
                     if (rowsAffected > 0){
                         
-                        
+                        JOptionPane.showMessageDialog(this, 
+                        "User has been edited",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);    
                 }
             }
         } catch (SQLException e) {
