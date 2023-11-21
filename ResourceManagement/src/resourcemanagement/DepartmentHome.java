@@ -45,11 +45,12 @@ public class DepartmentHome extends javax.swing.JFrame {
                 String firstName = resultSet.getString("First_Name");
                 String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("Phone_Number");
                 String faculty = getFaculty(resultSet.getInt("Faculty_Id"));
                 String role = getUserRole(resultSet.getInt("User_Id"));
                 
                 // Add the retrieved data to the table model
-                model.addRow(new Object[]{firstName, lastName, email, faculty, role});
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber, faculty, role});
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -77,7 +78,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private String getRoleName(int roleId){
-        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        String roleQuery = "SELECT * FROM Role WHERE Role_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
