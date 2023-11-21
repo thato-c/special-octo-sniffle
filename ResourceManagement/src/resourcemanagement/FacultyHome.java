@@ -48,7 +48,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jTable5 = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<String>();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -60,7 +60,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<String>();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -151,7 +151,7 @@ public class FacultyHome extends javax.swing.JFrame {
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
 
         jLabel2.setText("Student Name");
 
@@ -173,7 +173,7 @@ public class FacultyHome extends javax.swing.JFrame {
 
         jButton2.setText("Message Student");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
 
         jButton3.setText("Select File");
 
@@ -394,6 +394,24 @@ public class FacultyHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void getCourseNames(int facultyId){
+        String courseQuery = "SELECT Course_Name FROM Course WHERE Faculty_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
+            
+            preparedStatement.setInt(1, facultyId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    
+                }
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     private void getDepartmentHeads(){
         String departmentQuery = "SELECT * FROM Department_Heads";
         
