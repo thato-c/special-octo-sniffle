@@ -47,7 +47,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        courseScheduleTable = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         cbStudentName = new javax.swing.JComboBox<String>();
@@ -130,23 +130,23 @@ public class FacultyHome extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel16.setText("Course Schedule");
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        courseScheduleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+                "Day", "Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable5);
+        jScrollPane2.setViewportView(courseScheduleTable);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel17.setText("Course Management Page");
@@ -308,7 +308,7 @@ public class FacultyHome extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGap(0, 65, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Course", jPanel2);
@@ -348,7 +348,7 @@ public class FacultyHome extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -390,7 +390,7 @@ public class FacultyHome extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Department", jPanel4);
@@ -405,7 +405,9 @@ public class FacultyHome extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -426,6 +428,7 @@ public class FacultyHome extends javax.swing.JFrame {
                 int courseId = resultSet.getInt("Course_Id");
                 getCourseMaterial(courseId);
                 getCourseEnrolment(courseId);
+                getCourseSchedule(courseId);
                 
             }
                 
@@ -483,6 +486,33 @@ public class FacultyHome extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnMessageStudentActionPerformed
 
+    private void getCourseSchedule(int courseId ){
+        String courseScheduleQuery = "SELECT * FROM Schedule WHERE Course_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseScheduleQuery)){
+            
+            preparedStatement.setInt(1, courseId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                DefaultTableModel model = (DefaultTableModel) courseScheduleTable.getModel();
+                model.setRowCount(0);
+                
+                while (resultSet.next()){
+                    
+                    String startTime = resultSet.getString("Scheduled_Time");
+                    String day = resultSet.getString("Scheduled_Day");
+                    
+                    model.addRow(new Object[]{day, startTime});
+                }
+            }
+            
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
     private void getCourseMaterial(int courseId){
         String materialQuery = "SELECT * FROM Course_Material WHERE Course_Id=?";
         
@@ -755,6 +785,7 @@ public class FacultyHome extends javax.swing.JFrame {
     private javax.swing.JButton btnUploadGrade;
     private javax.swing.JComboBox<String> cbCourseCode;
     private javax.swing.JComboBox<String> cbStudentName;
+    private javax.swing.JTable courseScheduleTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -780,7 +811,6 @@ public class FacultyHome extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable5;
     private javax.swing.JLabel lbCourseCredits;
     private javax.swing.JLabel lbCourseMaterial;
     private javax.swing.JLabel lbCourseName;
