@@ -412,13 +412,52 @@ public class StudentHome extends javax.swing.JFrame {
                 String firstName = resultSet.getString("First_Name");
                 String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
-                String role = "Unknown";
+                String role = getUserRole(resultSet.getInt("User_Id"));
                 
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{firstName, lastName, email, role});
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    private String getUserRole(int userId){
+        String userRoleQuery = "SELECT * FROM UserRole WHERE User_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(userRoleQuery)){
+            
+            preparedStatement.setInt(1, userId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                int RoleId = resultSet.getInt("Role_Id");
+                String roleName = getRoleName(RoleId);
+                return roleName;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
+    
+    private String getRoleName(int roleId){
+        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
+            
+            preparedStatement.setInt(1, roleId);
+            
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                String roleName = resultSet.getString("Role_Name");       
+                return roleName;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return "Unknown";
         }
     }
     
