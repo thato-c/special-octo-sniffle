@@ -140,7 +140,7 @@ public class Register extends javax.swing.JFrame {
                 "Try again",
                 JOptionPane.ERROR_MESSAGE);
         } else {
-            if (password.equals(confirmPassword)){
+            if (!password.equals(confirmPassword)){
                 JOptionPane.showMessageDialog(this,
                     "Passwords don't match",
                     "Try again",
@@ -157,6 +157,7 @@ public class Register extends javax.swing.JFrame {
                     int rowsAffected = preparedStatement.executeUpdate();
 
                     if (rowsAffected > 0){
+                        this.dispose();
                         Login loginFrame = new Login();
                         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         loginFrame.setVisible(true);
