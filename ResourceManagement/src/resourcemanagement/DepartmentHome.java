@@ -615,11 +615,6 @@ public class DepartmentHome extends javax.swing.JFrame {
                 PreparedStatement preparedStatement = connection.prepareStatement(roleQuery);
                 ResultSet resultSet = preparedStatement.executeQuery()){
             
-            DefaultTableModel model = (DefaultTableModel) departmentTable.getModel();
-            
-            // Clear the table data before populating it with new data
-            model.setRowCount(0);
-            
             String[] roleValues = new String[]{};
             String[] newValue = new String[]{resultSet.getString("Role_Name")};
 
