@@ -154,6 +154,11 @@ public class FacultyHome extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
         cbStudentName.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
+        cbStudentName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStudentNameActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Student Name");
 
@@ -485,6 +490,10 @@ public class FacultyHome extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnMessageStudentActionPerformed
+
+    private void cbStudentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStudentNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbStudentNameActionPerformed
 
     private void getCourseSchedule(int courseId ){
         String courseScheduleQuery = "SELECT * FROM Schedule WHERE Course_Id=?";
