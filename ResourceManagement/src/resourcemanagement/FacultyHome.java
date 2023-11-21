@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,18 +50,18 @@ public class FacultyHome extends javax.swing.JFrame {
         jTable5 = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        cbStudentName = new javax.swing.JComboBox<String>();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        tfStudentGrade = new javax.swing.JTextField();
+        lbCourseName = new javax.swing.JLabel();
+        lbCourseCredits = new javax.swing.JLabel();
+        lbCourseMaterial = new javax.swing.JLabel();
+        btnUploadGrade = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
+        taStudentMessage = new javax.swing.JTextArea();
+        btnMessageStudent = new javax.swing.JButton();
         cbCourseCode = new javax.swing.JComboBox<String>();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -152,29 +153,44 @@ public class FacultyHome extends javax.swing.JFrame {
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
+        cbStudentName.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
 
         jLabel2.setText("Student Name");
 
         jLabel6.setText("Student Grade");
 
-        jLabel8.setText("Course Name");
+        lbCourseName.setText("Course Name");
 
-        jLabel9.setText("Course Credits");
+        lbCourseCredits.setText("Course Credits");
 
-        jLabel10.setText("Course Material Link");
+        lbCourseMaterial.setText("Course Material");
 
-        jButton1.setText("Upload Grade");
+        btnUploadGrade.setText("Upload Grade");
+        btnUploadGrade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadGradeActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Message");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        taStudentMessage.setColumns(20);
+        taStudentMessage.setRows(5);
+        jScrollPane3.setViewportView(taStudentMessage);
 
-        jButton2.setText("Message Student");
+        btnMessageStudent.setText("Message Student");
+        btnMessageStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMessageStudentActionPerformed(evt);
+            }
+        });
 
         cbCourseCode.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
+        cbCourseCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCourseCodeActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Select File");
 
@@ -202,10 +218,10 @@ public class FacultyHome extends javax.swing.JFrame {
                                 .addGap(138, 138, 138))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lbCourseMaterial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbCourseCredits, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(cbCourseCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3))
                         .addGap(51, 51, 51)
@@ -222,17 +238,17 @@ public class FacultyHome extends javax.swing.JFrame {
                                 .addGap(71, 71, 71)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(jTextField1)
+                                        .addComponent(tfStudentGrade)
                                         .addGap(99, 99, 99)
-                                        .addComponent(jButton1)
+                                        .addComponent(btnUploadGrade)
                                         .addGap(19, 19, 19))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
                                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel5Layout.createSequentialGroup()
                                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton2))
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(btnMessageStudent))
+                                            .addComponent(cbStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))))
         );
         jPanel5Layout.setVerticalGroup(
@@ -243,11 +259,11 @@ public class FacultyHome extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addComponent(cbCourseCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel8)
+                        .addComponent(lbCourseName)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel9)
+                        .addComponent(lbCourseCredits)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel10)
+                        .addComponent(lbCourseMaterial)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3))
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -255,20 +271,20 @@ public class FacultyHome extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(tfStudentGrade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUploadGrade))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2)))
+                        .addComponent(btnMessageStudent)))
                 .addGap(24, 24, 24)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -395,6 +411,98 @@ public class FacultyHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbCourseCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCourseCodeActionPerformed
+        String selectedItem = (String) cbCourseCode.getSelectedItem();
+        String courseQuery = "SELECT * FROM Course WHERE Code=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
+            
+            preparedStatement.setString(1, selectedItem);
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                
+                lbCourseName.setText(resultSet.getString("Course_Name"));
+                lbCourseCredits.setText(resultSet.getString("Credits"));
+                int courseId = resultSet.getInt("Course_Id");
+                getCourseMaterial(courseId);
+                getCourseEnrolment(courseId);
+                
+            }
+                
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_cbCourseCodeActionPerformed
+
+    private void btnUploadGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadGradeActionPerformed
+        String enrolmentQuery = "UPDATE Enrolment SET Grade = ? WHERE Student_Id=?";
+        String assignedGrade = tfStudentGrade.getText();
+        int StudentId = getStudentId();
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery)){
+            
+            preparedStatement.setString(1, assignedGrade);
+            preparedStatement.setInt(1, StudentId);
+            
+            int rowsUpdated = preparedStatement.executeUpdate();
+        
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(this,
+                    cbStudentName.getSelectedItem() + " has been graded " + assignedGrade,
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE); 
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    " No student found with ID: " + StudentId,
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException e){
+            
+        }
+    }//GEN-LAST:event_btnUploadGradeActionPerformed
+
+    private void btnMessageStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMessageStudentActionPerformed
+        String selectedItem = (String) cbStudentName.getSelectedItem();
+        String message = taStudentMessage.getText();
+        
+        if (message.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                    "Message is empty",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE); 
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Message: " + message + " has been sent to " + selectedItem,
+                    "Success:Message Sent",
+                    JOptionPane.ERROR_MESSAGE); 
+        }
+        
+    }//GEN-LAST:event_btnMessageStudentActionPerformed
+
+    private void getCourseMaterial(int courseId){
+        String materialQuery = "SELECT * FROM Course_Material WHERE Course_Id=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(materialQuery);
+                ){
+            
+            preparedStatement.setInt(1, courseId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                String material = resultSet.getString("Name");
+                lbCourseMaterial.setText(material);
+                }
+            }    
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     
     private void getCourseNames(int facultyId){
         String courseQuery = "SELECT * FROM Course WHERE Faculty_Id=?";
@@ -422,6 +530,48 @@ public class FacultyHome extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }   
+    
+    private void getCourseEnrolment(int courseId){
+        String enrolmentQuery = "SELECT * FROM Enrollment WHERE Course_Id=?";
+        String[] studentNames = new String[]{};
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery);
+                ){
+            
+            preparedStatement.setInt(1, courseId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    getStudentName(resultSet.getInt("Student_Id"), studentNames);
+                }
+            }    
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    private void getStudentName(int StudentId, String[] studentNames){
+        String studentQuery = "SELECT * FROM Student WHERE Student_Id=?";
+
+        try(Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery)){
+            
+                preparedStatement.setInt(1, StudentId);
+            
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    String[] newValue = new String[]{resultSet.getString("First_Name")};
+                    String[] allValues = new String[studentNames.length + 1];
+                    System.arraycopy(studentNames, 0, allValues, 0, studentNames.length);
+                    System.arraycopy(newValue, 0, allValues, studentNames.length, newValue.length);
+                    DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(allValues);
+                    cbStudentName.setModel(comboBoxModel);
+                }   
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     
     private void getDepartmentHeads(){
         String departmentQuery = "SELECT * FROM Department_Heads";
@@ -544,6 +694,27 @@ public class FacultyHome extends javax.swing.JFrame {
             return "N/A";
         }
     }
+    
+    private int getStudentId(){
+        String selectedItem = (String) cbStudentName.getSelectedItem();
+        String studentQuery = "SELECT Student_Id FROM Student WHERE First_Name=?";
+        
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(studentQuery)){
+            
+            preparedStatement.setString(1, selectedItem);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                int studentId = resultSet.getInt("Student_Id");
+                return studentId;
+            }
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 1;
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -580,14 +751,13 @@ public class FacultyHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMessageStudent;
+    private javax.swing.JButton btnUploadGrade;
     private javax.swing.JComboBox<String> cbCourseCode;
+    private javax.swing.JComboBox<String> cbStudentName;
     private javax.swing.JTable departmentTable;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -596,8 +766,6 @@ public class FacultyHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -613,7 +781,10 @@ public class FacultyHome extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable5;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbCourseCredits;
+    private javax.swing.JLabel lbCourseMaterial;
+    private javax.swing.JLabel lbCourseName;
+    private javax.swing.JTextArea taStudentMessage;
+    private javax.swing.JTextField tfStudentGrade;
     // End of variables declaration//GEN-END:variables
 }

@@ -194,10 +194,10 @@
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel8" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                                      <Component id="lbCourseName" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
                                       <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jLabel9" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="lbCourseMaterial" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="lbCourseCredits" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                       <Component id="cbCourseCode" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jButton3" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -219,9 +219,9 @@
                                           <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="jTextField1" max="32767" attributes="0"/>
+                                                  <Component id="tfStudentGrade" max="32767" attributes="0"/>
                                                   <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
-                                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="btnUploadGrade" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" attributes="0">
@@ -229,9 +229,9 @@
                                                       <Group type="102" attributes="0">
                                                           <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
                                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="btnMessageStudent" min="-2" max="-2" attributes="0"/>
                                                       </Group>
-                                                      <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="cbStudentName" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace max="32767" attributes="0"/>
                                               </Group>
@@ -251,11 +251,11 @@
                                   <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                   <Component id="cbCourseCode" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbCourseName" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbCourseCredits" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbCourseMaterial" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jButton3" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -264,14 +264,14 @@
                                   <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbStudentName" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tfStudentGrade" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnUploadGrade" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -281,7 +281,7 @@
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnMessageStudent" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
@@ -354,7 +354,7 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="cbStudentName">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="4">
@@ -379,27 +379,30 @@
                     <Property name="text" type="java.lang.String" value="Student Grade"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField1">
+                <Component class="javax.swing.JTextField" name="tfStudentGrade">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="lbCourseName">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Course Name"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel9">
+                <Component class="javax.swing.JLabel" name="lbCourseCredits">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Course Credits"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel10">
+                <Component class="javax.swing.JLabel" name="lbCourseMaterial">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Course Material Link"/>
+                    <Property name="text" type="java.lang.String" value="Course Material"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="btnUploadGrade">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Upload Grade"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUploadGradeActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel11">
                   <Properties>
@@ -413,7 +416,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="jTextArea1">
+                    <Component class="javax.swing.JTextArea" name="taStudentMessage">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
@@ -421,10 +424,13 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="jButton2">
+                <Component class="javax.swing.JButton" name="btnMessageStudent">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Message Student"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMessageStudentActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cbCourseCode">
                   <Properties>
@@ -437,6 +443,9 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbCourseCodeActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
