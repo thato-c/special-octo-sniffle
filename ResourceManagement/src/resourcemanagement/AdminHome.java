@@ -261,7 +261,7 @@ public class AdminHome extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
-        jButton17 = new javax.swing.JButton();
+        btnUpdateUser = new javax.swing.JButton();
         btnDeleteUser = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -495,7 +495,12 @@ public class AdminHome extends javax.swing.JFrame {
         ));
         jScrollPane6.setViewportView(userTable);
 
-        jButton17.setText("Edit User");
+        btnUpdateUser.setText("Edit User");
+        btnUpdateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateUserActionPerformed(evt);
+            }
+        });
 
         btnDeleteUser.setText("Delete User");
         btnDeleteUser.addActionListener(new java.awt.event.ActionListener() {
@@ -512,7 +517,7 @@ public class AdminHome extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton17)
+                        .addComponent(btnUpdateUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addGap(53, 53, 53)
@@ -526,7 +531,7 @@ public class AdminHome extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jButton17)
+                    .addComponent(btnUpdateUser)
                     .addComponent(btnDeleteUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -732,7 +737,7 @@ public class AdminHome extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             // Get the database connection from the TaskManager class
-            java.sql.Connection connection = ResourceManagement.getConnection();
+            Connection connection = ResourceManagement.getConnection();
             
             try{
                 String userToDelete = (String) userTable.getValueAt(row, 0);
@@ -756,6 +761,66 @@ public class AdminHome extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteUserActionPerformed
 
+    private void btnUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateUserActionPerformed
+        int row = userTable.getSelectedRow();
+        
+        
+        if (row < 0){
+            JOptionPane.showMessageDialog(this,
+                    "No row is selected. Please select a row",
+                    "Select row",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            String tableName;
+            String position = (String) userTable.getValueAt(row, 4);
+            
+            if (position.equals("Faculty_Member")){
+                tableName = "Faculty_Member";
+                updateRelevantPositionTable(tableName, row);
+            } else if (position.equals("Department_Heads")){
+                tableName = "Department_Heads";
+                updateRelevantPositionTable(tableName, row);
+            } else if (position.equals("Student")){
+                tableName = "Student";
+                updateRelevantPositionTable(tableName, row);
+            } 
+        }
+    }//GEN-LAST:event_btnUpdateUserActionPerformed
+
+    private void updateRelevantPositionTable(String tableName, int row){
+        // Get the database connection from the TaskManager class
+        String firstName = (String) userTable.getValueAt(row, 0);
+        String lastName = (String) userTable.getValueAt(row, 1);
+        String email = (String) userTable.getValueAt(row, 2);
+        String phoneNumber = (String) userTable.getValueAt(row, 3);
+        
+        Connection connection = ResourceManagement.getConnection();
+            
+        try{
+            String userToUpdate = (String) userTable.getValueAt(row, 0);
+            // Prepare the INSERT statement
+            String sqlInsert = "UPDATE "+ tableName +" SET First_Name=?, Last_Name=?, Email=?, PhoneNumber=? WHERE First_Name=?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
+                    preparedStatement.setString(1, firstName);
+                    preparedStatement.setString(1, lastName);
+                    preparedStatement.setString(1, email);
+                    preparedStatement.setString(1, phoneNumber);
+                    preparedStatement.setString(1, userToUpdate);
+
+                    // Execute the DELETE statement
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0){
+                        
+                        
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -794,6 +859,7 @@ public class AdminHome extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteUser;
+    private javax.swing.JButton btnUpdateUser;
     private javax.swing.JTable courseTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;
@@ -805,7 +871,6 @@ public class AdminHome extends javax.swing.JFrame {
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
