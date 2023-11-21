@@ -26,6 +26,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         getStudents();
         getFacultyMembers();
         getDepartmentHeads();
+        getCourses();
     }
     
     private void getFacultyMembers(){
@@ -44,11 +45,12 @@ public class DepartmentHome extends javax.swing.JFrame {
                 String firstName = resultSet.getString("First_Name");
                 String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("Phone_Number");
                 String faculty = getFaculty(resultSet.getInt("Faculty_Id"));
                 String role = getUserRole(resultSet.getInt("User_Id"));
                 
                 // Add the retrieved data to the table model
-                model.addRow(new Object[]{firstName, lastName, email, faculty, role});
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber, faculty, role});
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -76,7 +78,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private String getRoleName(int roleId){
-        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        String roleQuery = "SELECT * FROM Role WHERE Role_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
@@ -217,6 +219,26 @@ public class DepartmentHome extends javax.swing.JFrame {
         }
     }
     
+    private void getCourses(){
+        String courseQuery = "SELECT * FROM Course";
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            DefaultTableModel model = (DefaultTableModel) courseTable.getModel();
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            while (resultSet.next()){
+                String code = resultSet.getString("Code");
+                String name = resultSet.getString("Course_Name");
+                String credits = resultSet.getString("Credits");
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{code, name, credits});
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     
     
     /**
@@ -238,7 +260,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        CourseTable = new javax.swing.JTable();
+        courseTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -329,7 +351,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Course Page");
 
-        CourseTable.setModel(new javax.swing.table.DefaultTableModel(
+        courseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -348,7 +370,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(CourseTable);
+        jScrollPane3.setViewportView(courseTable);
 
         jLabel5.setText("Course Code");
 
@@ -584,8 +606,8 @@ public class DepartmentHome extends javax.swing.JFrame {
 
     private void btnAddCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCourseActionPerformed
         String courseCode = tfCourseCode.getText();
-        String courseName = tfCourseCode.getText();
-        String courseCredits = tfCourseCode.getText();
+        String courseName = tfCourseName.getText();
+        String courseCredits = tfCourseCredits.getText();
         
         if (courseCode.isEmpty() | courseCode.isEmpty() | courseCode.isEmpty()){
             JOptionPane.showMessageDialog(this,
@@ -597,20 +619,21 @@ public class DepartmentHome extends javax.swing.JFrame {
             java.sql.Connection connection = ResourceManagement.getConnection();
             
             // Prepare the INSERT statement
-            String sqlInsert = "Insert INTO Course (Name, Credits, Course) VALUES (?, ?, ?)";
+            String sqlInsert = "Insert INTO Course (Course_Name, Credits, Code) VALUES (?, ?, ?)";
             
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
-                preparedStatement.setString(1, courseCode);
+                preparedStatement.setString(1, courseName);
                 preparedStatement.setString(2, courseCredits);
-                preparedStatement.setString(3, courseName);
+                preparedStatement.setString(3, courseCode);
+                
             
             
                 // Execute the INSERT statement
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0){
-                    DefaultTableModel model = (DefaultTableModel) CourseTable.getModel();
-                    model.addRow(new Object[] {courseCode, courseCredits, courseName});
+                    DefaultTableModel model = (DefaultTableModel) courseTable.getModel();
+                    model.addRow(new Object[] {courseCode, courseName, courseCredits});
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -708,11 +731,11 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable CourseTable;
     private javax.swing.JButton btnAddCourse;
     private javax.swing.JButton btnAssignMemberRole;
     private javax.swing.JButton btnResourceUpload;
     private javax.swing.JComboBox<String> cbRole;
+    private javax.swing.JTable courseTable;
     private javax.swing.JTable departmentResourceTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;
