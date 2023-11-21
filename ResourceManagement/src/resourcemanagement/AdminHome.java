@@ -799,7 +799,7 @@ public class AdminHome extends javax.swing.JFrame {
         try{
             String userToUpdate = (String) userTable.getValueAt(row, 0);
             // Prepare the INSERT statement
-            String sqlInsert = "UPDATE "+ tableName +" SET First_Name=?, Last_Name=?, Email=?, PhoneNumber=? WHERE First_Name=?";
+            String sqlInsert = "UPDATE "+ tableName +" SET First_Name=?, Last_Name=?, Email=?, Phone_Number=? WHERE First_Name=?";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
                     preparedStatement.setString(1, firstName);
