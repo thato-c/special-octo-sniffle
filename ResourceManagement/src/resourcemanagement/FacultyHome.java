@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -60,7 +61,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<String>();
+        cbCourseCode = new javax.swing.JComboBox<String>();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -173,7 +174,7 @@ public class FacultyHome extends javax.swing.JFrame {
 
         jButton2.setText("Message Student");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
+        cbCourseCode.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
 
         jButton3.setText("Select File");
 
@@ -205,7 +206,7 @@ public class FacultyHome extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbCourseCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3))
                         .addGap(51, 51, 51)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +241,7 @@ public class FacultyHome extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbCourseCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
@@ -394,8 +395,10 @@ public class FacultyHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void getCourseNames(int facultyId){
-        String courseQuery = "SELECT Course_Name FROM Course WHERE Faculty_Id=?";
+        String courseQuery = "SELECT * FROM Course WHERE Faculty_Id=?";
+        String[] facultyMemberCourses = new String[]{};
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
@@ -404,13 +407,21 @@ public class FacultyHome extends javax.swing.JFrame {
             try (ResultSet resultSet = preparedStatement.executeQuery()){
                 while (resultSet.next()){
                     
+                    
+                    String[] newValue = new String[]{resultSet.getString("Code")};
+                    String[] allValues = new String[facultyMemberCourses.length + 1];
+                    System.arraycopy(facultyMemberCourses, 0, allValues, 0, facultyMemberCourses.length);
+                    System.arraycopy(newValue, 0, allValues, facultyMemberCourses.length, newValue.length);
+                    
+                    DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(allValues);
+                    cbCourseCode.setModel(comboBoxModel);
                 }
             }
             
         } catch (SQLException e){
             e.printStackTrace();
         }
-    }
+    }   
     
     private void getDepartmentHeads(){
         String departmentQuery = "SELECT * FROM Department_Heads";
@@ -477,6 +488,7 @@ public class FacultyHome extends javax.swing.JFrame {
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 
                 String faculty = resultSet.getString("Faculty_Name");
+                getCourseNames(facultyId);
                 return faculty;
             }
             
@@ -568,12 +580,12 @@ public class FacultyHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbCourseCode;
     private javax.swing.JTable departmentTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
