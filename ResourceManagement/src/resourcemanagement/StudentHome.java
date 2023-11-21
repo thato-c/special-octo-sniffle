@@ -443,7 +443,7 @@ public class StudentHome extends javax.swing.JFrame {
     }
     
     private String getRoleName(int roleId){
-        String roleQuery = "SELECT * FROM Roles WHERE Role_Id=?";
+        String roleQuery = "SELECT * FROM Role WHERE Role_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)){
