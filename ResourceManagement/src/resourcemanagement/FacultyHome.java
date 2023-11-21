@@ -401,7 +401,7 @@ public class FacultyHome extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,7 +439,7 @@ public class FacultyHome extends javax.swing.JFrame {
     }//GEN-LAST:event_cbCourseCodeActionPerformed
 
     private void btnUploadGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadGradeActionPerformed
-        String enrolmentQuery = "UPDATE Enrolment SET Grade = ? WHERE Student_Id=?";
+        String enrolmentQuery = "UPDATE Enrollment SET Grade = ? WHERE Student_Id=?";
         String assignedGrade = tfStudentGrade.getText();
         if (assignedGrade.isEmpty()){
             JOptionPane.showMessageDialog(this,
@@ -545,14 +545,13 @@ public class FacultyHome extends javax.swing.JFrame {
     }
     
     private void getCourseNames(int facultyId){
-        String courseQuery = "SELECT * FROM Course WHERE Faculty_Id=?";
+        String courseQuery = "SELECT * FROM Course";
         String[] facultyMemberCourses = new String[]{};
         
         try (Connection connection = ResourceManagement.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
-            
-            preparedStatement.setInt(1, facultyId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+                        
                 while (resultSet.next()){
                     
                     
@@ -562,9 +561,9 @@ public class FacultyHome extends javax.swing.JFrame {
                     System.arraycopy(newValue, 0, allValues, facultyMemberCourses.length, newValue.length);
                     
                     DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(allValues);
-                    cbCourseCode.setModel(comboBoxModel);
+                    //cbCourseCode.setModel(comboBoxModel);
                 }
-            }
+            
             
         } catch (SQLException e){
             e.printStackTrace();
