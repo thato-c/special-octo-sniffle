@@ -155,6 +155,7 @@ public class FacultyHome extends javax.swing.JFrame {
 
 
         cbStudentName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
+>>>>>>> UpdateFacultyHomeUpdate
 
         jLabel2.setText("Student Name");
 
