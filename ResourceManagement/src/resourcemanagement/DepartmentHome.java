@@ -606,8 +606,8 @@ public class DepartmentHome extends javax.swing.JFrame {
 
     private void btnAddCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCourseActionPerformed
         String courseCode = tfCourseCode.getText();
-        String courseName = tfCourseCode.getText();
-        String courseCredits = tfCourseCode.getText();
+        String courseName = tfCourseName.getText();
+        String courseCredits = tfCourseCredits.getText();
         
         if (courseCode.isEmpty() | courseCode.isEmpty() | courseCode.isEmpty()){
             JOptionPane.showMessageDialog(this,
@@ -619,12 +619,13 @@ public class DepartmentHome extends javax.swing.JFrame {
             java.sql.Connection connection = ResourceManagement.getConnection();
             
             // Prepare the INSERT statement
-            String sqlInsert = "Insert INTO Course (Name, Credits, Course) VALUES (?, ?, ?)";
+            String sqlInsert = "Insert INTO Course (Code, Credits, Course_Name) VALUES (?, ?, ?)";
             
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
                 preparedStatement.setString(1, courseCode);
-                preparedStatement.setString(2, courseCredits);
-                preparedStatement.setString(3, courseName);
+                preparedStatement.setString(2, courseName);
+                preparedStatement.setString(3, courseCredits);
+                
             
             
                 // Execute the INSERT statement
@@ -632,7 +633,7 @@ public class DepartmentHome extends javax.swing.JFrame {
 
                 if (rowsAffected > 0){
                     DefaultTableModel model = (DefaultTableModel) courseTable.getModel();
-                    model.addRow(new Object[] {courseCode, courseCredits, courseName});
+                    model.addRow(new Object[] {courseCode, courseName, courseCredits});
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
