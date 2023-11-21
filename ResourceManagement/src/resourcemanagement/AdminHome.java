@@ -59,6 +59,8 @@ public class AdminHome extends javax.swing.JFrame {
         }
     }
     
+    
+    
     private String getFaculty(int facultyId){
         String facultyQuery = "SELECT Faculty_Name WHERE Faculty_Id=?";
         
