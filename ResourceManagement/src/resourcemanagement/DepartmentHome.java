@@ -26,6 +26,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         getStudents();
         getFacultyMembers();
         getDepartmentHeads();
+        getCourses();
     }
     
     private void getFacultyMembers(){
@@ -217,6 +218,26 @@ public class DepartmentHome extends javax.swing.JFrame {
         }
     }
     
+    private void getCourses(){
+        String courseQuery = "SELECT * FROM Course";
+        try (Connection connection = ResourceManagement.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+            DefaultTableModel model = (DefaultTableModel) courseTable.getModel();
+            // Clear the table data before populating it with new data
+            model.setRowCount(0);
+            while (resultSet.next()){
+                String code = resultSet.getString("Code");
+                String name = resultSet.getString("Course_Name");
+                String credits = resultSet.getString("Credits");
+                // Add the retrieved data to the table model
+                model.addRow(new Object[]{code, name, credits});
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     
     
     /**
@@ -238,7 +259,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        CourseTable = new javax.swing.JTable();
+        courseTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -329,7 +350,7 @@ public class DepartmentHome extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Course Page");
 
-        CourseTable.setModel(new javax.swing.table.DefaultTableModel(
+        courseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -348,7 +369,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(CourseTable);
+        jScrollPane3.setViewportView(courseTable);
 
         jLabel5.setText("Course Code");
 
@@ -609,7 +630,7 @@ public class DepartmentHome extends javax.swing.JFrame {
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0){
-                    DefaultTableModel model = (DefaultTableModel) CourseTable.getModel();
+                    DefaultTableModel model = (DefaultTableModel) courseTable.getModel();
                     model.addRow(new Object[] {courseCode, courseCredits, courseName});
                 }
             } catch (SQLException e) {
@@ -708,11 +729,11 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable CourseTable;
     private javax.swing.JButton btnAddCourse;
     private javax.swing.JButton btnAssignMemberRole;
     private javax.swing.JButton btnResourceUpload;
     private javax.swing.JComboBox<String> cbRole;
+    private javax.swing.JTable courseTable;
     private javax.swing.JTable departmentResourceTable;
     private javax.swing.JTable departmentTable;
     private javax.swing.JTable facultyTable;

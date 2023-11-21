@@ -453,10 +453,10 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="4">
-                        <StringItem index="0" value="Course 1"/>
-                        <StringItem index="1" value="Course 2"/>
-                        <StringItem index="2" value="Course 3"/>
-                        <StringItem index="3" value="Course 4"/>
+                        <StringItem index="0" value="PRG101"/>
+                        <StringItem index="1" value="CALC01"/>
+                        <StringItem index="2" value="CM101"/>
+                        <StringItem index="3" value="CB101"/>
                       </StringArray>
                     </Property>
                   </Properties>

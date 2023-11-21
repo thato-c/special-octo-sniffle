@@ -50,7 +50,7 @@ public class FacultyHome extends javax.swing.JFrame {
         courseScheduleTable = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        cbStudentName = new javax.swing.JComboBox<String>();
+        cbStudentName = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         tfStudentGrade = new javax.swing.JTextField();
@@ -62,7 +62,7 @@ public class FacultyHome extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         taStudentMessage = new javax.swing.JTextArea();
         btnMessageStudent = new javax.swing.JButton();
-        cbCourseCode = new javax.swing.JComboBox<String>();
+        cbCourseCode = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -153,12 +153,16 @@ public class FacultyHome extends javax.swing.JFrame {
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
+<<<<<<< HEAD
         cbStudentName.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
         cbStudentName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbStudentNameActionPerformed(evt);
             }
         });
+=======
+        cbStudentName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student 1", "Student 2", "Student 3", "Student 4" }));
+>>>>>>> UpdateFacultyHomeUpdate
 
         jLabel2.setText("Student Name");
 
@@ -190,7 +194,7 @@ public class FacultyHome extends javax.swing.JFrame {
             }
         });
 
-        cbCourseCode.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Course 1", "Course 2", "Course 3", "Course 4" }));
+        cbCourseCode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PRG101", "CALC01", "CM101", "CB101" }));
         cbCourseCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCourseCodeActionPerformed(evt);
@@ -444,32 +448,42 @@ public class FacultyHome extends javax.swing.JFrame {
     }//GEN-LAST:event_cbCourseCodeActionPerformed
 
     private void btnUploadGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadGradeActionPerformed
-        String enrolmentQuery = "UPDATE Enrolment SET Grade = ? WHERE Student_Id=?";
+        String enrolmentQuery = "UPDATE Enrollment SET Grade = ? WHERE Student_Id=?";
         String assignedGrade = tfStudentGrade.getText();
-        int StudentId = getStudentId();
-        
-        try (Connection connection = ResourceManagement.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery)){
-            
-            preparedStatement.setString(1, assignedGrade);
-            preparedStatement.setInt(1, StudentId);
-            
-            int rowsUpdated = preparedStatement.executeUpdate();
-        
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(this,
-                    cbStudentName.getSelectedItem() + " has been graded " + assignedGrade,
+        if (assignedGrade.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                    "Message is empty",
                     "Select row",
                     JOptionPane.ERROR_MESSAGE); 
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    " No student found with ID: " + StudentId,
-                    "Select row",
-                    JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            
+            int StudentId = getStudentId();
+        
+            try (Connection connection = ResourceManagement.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(enrolmentQuery)){
+
+                preparedStatement.setString(1, assignedGrade);
+                preparedStatement.setInt(1, StudentId);
+
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    JOptionPane.showMessageDialog(this,
+                        cbStudentName.getSelectedItem() + " has been graded " + assignedGrade,
+                        "Select row",
+                        JOptionPane.INFORMATION_MESSAGE); 
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        " No student found with ID: " + StudentId,
+                        "Select row",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException e){
+                e.printStackTrace();
+
             }
-            
-        } catch (SQLException e){
-            
         }
     }//GEN-LAST:event_btnUploadGradeActionPerformed
 
@@ -544,14 +558,13 @@ public class FacultyHome extends javax.swing.JFrame {
     }
     
     private void getCourseNames(int facultyId){
-        String courseQuery = "SELECT * FROM Course WHERE Faculty_Id=?";
+        String courseQuery = "SELECT * FROM Course";
         String[] facultyMemberCourses = new String[]{};
         
         try (Connection connection = ResourceManagement.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
-            
-            preparedStatement.setInt(1, facultyId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                PreparedStatement preparedStatement = connection.prepareStatement(courseQuery);
+                ResultSet resultSet = preparedStatement.executeQuery()){
+                        
                 while (resultSet.next()){
                     
                     
@@ -561,9 +574,9 @@ public class FacultyHome extends javax.swing.JFrame {
                     System.arraycopy(newValue, 0, allValues, facultyMemberCourses.length, newValue.length);
                     
                     DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(allValues);
-                    cbCourseCode.setModel(comboBoxModel);
+                    //cbCourseCode.setModel(comboBoxModel);
                 }
-            }
+            
             
         } catch (SQLException e){
             e.printStackTrace();
@@ -667,7 +680,7 @@ public class FacultyHome extends javax.swing.JFrame {
     }
     
     private String getUserFaculty(int facultyId){
-        String facultyQuery = "SELECT Faculty_Name WHERE Faculty_Id=?";
+        String facultyQuery = "SELECT Faculty_Name FROM Faculty WHERE Faculty_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
@@ -733,7 +746,7 @@ public class FacultyHome extends javax.swing.JFrame {
             return "N/A";
         }
     }
-    
+       
     private int getStudentId(){
         String selectedItem = (String) cbStudentName.getSelectedItem();
         String studentQuery = "SELECT Student_Id FROM Student WHERE First_Name=?";
