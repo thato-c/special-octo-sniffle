@@ -619,12 +619,12 @@ public class DepartmentHome extends javax.swing.JFrame {
             java.sql.Connection connection = ResourceManagement.getConnection();
             
             // Prepare the INSERT statement
-            String sqlInsert = "Insert INTO Course (Code, Credits, Course_Name) VALUES (?, ?, ?)";
+            String sqlInsert = "Insert INTO Course (Course_Name, Credits, Code) VALUES (?, ?, ?)";
             
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)){
-                preparedStatement.setString(1, courseCode);
-                preparedStatement.setString(2, courseName);
-                preparedStatement.setString(3, courseCredits);
+                preparedStatement.setString(1, courseName);
+                preparedStatement.setString(2, courseCredits);
+                preparedStatement.setString(3, courseCode);
                 
             
             
