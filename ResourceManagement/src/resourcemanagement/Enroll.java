@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -168,9 +169,15 @@ public class Enroll extends javax.swing.JFrame {
 
                 if (rowsAffected > 0){
                     JOptionPane.showMessageDialog(this,
-                    "Congrats: You are now enrolled for" + selectedCourse,
-                    "Successful Enrollment",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        "You have enrolled for your course successfully. "
+                                + "You just have to create an account to be able to access the system",
+                        "Successful Enrollment",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                    
+                    Register systemRegistrationFrame = new Register();
+                    systemRegistrationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    systemRegistrationFrame.setVisible(true);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
