@@ -4,6 +4,12 @@
  */
 package resourcemanagement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tchit
@@ -124,6 +130,42 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_tfConfirmPasswordActionPerformed
 
     private void btnCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateUserActionPerformed
+        String username = tfUsername.getText();
+        String password = tfPassword.getText();
+        String confirmPassword = tfConfirmPassword.getText();
+        
+        if (username.isEmpty() | password.isEmpty() | confirmPassword.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                "Please enter all fields",
+                "Try again",
+                JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (password.equals(confirmPassword)){
+                JOptionPane.showMessageDialog(this,
+                    "Passwords don't match",
+                    "Try again",
+                    JOptionPane.ERROR_MESSAGE);
+            } else{
+                String userQuery = "Insert INTO User (Username, Password) VALUES (?, ?)";
+            
+                try (Connection connection = ResourceManagement.getConnection();
+                        PreparedStatement preparedStatement = connection.prepareStatement(userQuery)){
+                        preparedStatement.setString(1, username);
+                        preparedStatement.setString(2, password);
+
+                    // Execute the INSERT statement
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0){
+                        Login loginFrame = new Login();
+                        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        loginFrame.setVisible(true);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         
     }//GEN-LAST:event_btnCreateUserActionPerformed
 
