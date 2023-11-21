@@ -41,10 +41,10 @@ public class DepartmentHome extends javax.swing.JFrame {
             model.setRowCount(0);
             
             while (resultSet.next()){
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
-                String faculty = getFaculty(resultSet.getInt("FacultyId"));
+                String faculty = getFaculty(resultSet.getInt("Faculty_Id"));
                 String role = "Unknown";
                 
                 // Add the retrieved data to the table model
@@ -56,7 +56,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private String getFaculty(int facultyId){
-        String facultyQuery = "SELECT Name FROM Faculty WHERE Faculty_Id=?";
+        String facultyQuery = "SELECT Faculty_Name FROM Faculty WHERE Faculty_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(facultyQuery)){
@@ -65,7 +65,7 @@ public class DepartmentHome extends javax.swing.JFrame {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 
-                String faculty = resultSet.getString("Name");
+                String faculty = resultSet.getString("Faculty_Name");
                 return faculty;
             }
             
@@ -76,7 +76,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
 
     private void getDepartmentHeads(){
-        String departmentQuery = "SELECT * FROM DepartmentHead";
+        String departmentQuery = "SELECT * FROM Department_Heads";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery);
@@ -88,14 +88,14 @@ public class DepartmentHome extends javax.swing.JFrame {
             model.setRowCount(0);
             
             while (resultSet.next()){
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
-                String phoneNumber = resultSet.getString("PhoneNumber");
+                String phoneNumber = resultSet.getString("Phone_Number");
                 String department = getDepartment(resultSet.getInt("Department_Id"));
                 
                 // Add the retrieved data to the table model
-                model.addRow(new Object[]{firstName, lastName, email, phoneNumber});
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber,department});
             }
             
         } catch (SQLException e){
@@ -104,7 +104,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private String getDepartment(int departmentId){
-        String departmentQuery = "SELECT Name WHERE Department_Id=?";
+        String departmentQuery = "SELECT Department_Name FROM Department WHERE Department_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(departmentQuery)){
@@ -113,7 +113,7 @@ public class DepartmentHome extends javax.swing.JFrame {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 
-                String department = resultSet.getString("Name");
+                String department = resultSet.getString("Department_Name");
                 getDepartmentResources(departmentId);
                 return department;
             }
@@ -125,7 +125,7 @@ public class DepartmentHome extends javax.swing.JFrame {
     }
     
     private void getDepartmentResources(int departmentId){
-        String resourceQuery = "SELECT * FROM DepartmentResource WHERE Department_Id=?";
+        String resourceQuery = "SELECT * FROM Department_Resources WHERE Department_Id=?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(resourceQuery)){
@@ -139,8 +139,8 @@ public class DepartmentHome extends javax.swing.JFrame {
             
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 while (resultSet.next()){
-                String Name = resultSet.getString("Name");
-                String uploadDate = resultSet.getString("UploadDate");
+                String Name = resultSet.getString("Resource_Name");
+                String uploadDate = resultSet.getString("Upload_Date");
                 
                 // Add the retrieved data to the table model
                 model.addRow(new Object[]{Name, uploadDate});
@@ -164,12 +164,13 @@ public class DepartmentHome extends javax.swing.JFrame {
             model.setRowCount(0);
             
             while (resultSet.next()){
-                String firstName = resultSet.getString("FirstName");
-                String lastName = resultSet.getString("LastName");
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
                 String email = resultSet.getString("Email");
+                String phoneNumber = resultSet.getString("Phone_Number");
                 
                 // Add the retrieved data to the table model
-                model.addRow(new Object[]{firstName, lastName, email});
+                model.addRow(new Object[]{firstName, lastName, email, phoneNumber});
                 
             }
             
@@ -621,7 +622,7 @@ public class DepartmentHome extends javax.swing.JFrame {
             model.setRowCount(0);
             
             String[] roleValues = new String[]{};
-            String[] newValue = new String[]{resultSet.getString("Name")};
+            String[] newValue = new String[]{resultSet.getString("Role_Name")};
 
             
             while (resultSet.next()){
