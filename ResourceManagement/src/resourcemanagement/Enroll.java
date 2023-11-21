@@ -180,13 +180,14 @@ public class Enroll extends javax.swing.JFrame {
                     systemRegistrationFrame.setVisible(true);
                 }
             } catch (SQLException e) {
+                System.out.println("EnrollStudent");
                 e.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnEnrollStudentActionPerformed
 
     private void getCourseId(String courseName, int studentId){
-        String courseQuery = "SELECT Course_Id FROM Course WHERE Course_Name";
+        String courseQuery = "SELECT Course_Id FROM Course WHERE Course_Name = ?";
         
         try (Connection connection = ResourceManagement.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(courseQuery)){
@@ -200,6 +201,7 @@ public class Enroll extends javax.swing.JFrame {
                 assignStudentCourse(courseId, studentId);
             }
         } catch (SQLException e){
+            System.out.println("Get Course_Id");
             e.printStackTrace();
         }
     }
@@ -218,6 +220,7 @@ public class Enroll extends javax.swing.JFrame {
                 return studentId;
             }
         } catch (SQLException e) {
+            System.out.println("Get Student_Id");
             e.printStackTrace();
             return 0;
         }
@@ -241,6 +244,7 @@ public class Enroll extends javax.swing.JFrame {
                 System.out.println("Enrolling...");
             }
         } catch (SQLException e) {
+            System.out.println("Assign Student");
             e.printStackTrace();
         }
     }
